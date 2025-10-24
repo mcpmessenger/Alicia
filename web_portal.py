@@ -84,169 +84,9 @@ def store_api_key(user_id: str, provider: str, encrypted_key: bytes):
         raise
 
 def get_configuration_page():
-    """Return the HTML configuration page"""
-    return """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>AI Assistant Pro - API Key Configuration</title>
-        <style>
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                max-width: 600px;
-                margin: 0 auto;
-                padding: 20px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                min-height: 100vh;
-            }
-            .container {
-                background: white;
-                border-radius: 12px;
-                padding: 40px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            }
-            h1 {
-                color: #333;
-                text-align: center;
-                margin-bottom: 30px;
-            }
-            .provider-section {
-                margin-bottom: 30px;
-                padding: 20px;
-                border: 2px solid #f0f0f0;
-                border-radius: 8px;
-            }
-            .provider-section h3 {
-                margin-top: 0;
-                color: #555;
-            }
-            input[type="text"] {
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 6px;
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
-            button {
-                background: #667eea;
-                color: white;
-                border: none;
-                padding: 12px 24px;
-                border-radius: 6px;
-                font-size: 16px;
-                cursor: pointer;
-                width: 100%;
-                margin-top: 10px;
-            }
-            button:hover {
-                background: #5a6fd8;
-            }
-            .status {
-                padding: 10px;
-                border-radius: 6px;
-                margin-top: 10px;
-                display: none;
-            }
-            .success {
-                background: #d4edda;
-                color: #155724;
-                border: 1px solid #c3e6cb;
-            }
-            .error {
-                background: #f8d7da;
-                color: #721c24;
-                border: 1px solid #f5c6cb;
-            }
-            .instructions {
-                background: #e7f3ff;
-                padding: 15px;
-                border-radius: 6px;
-                margin-bottom: 20px;
-                border-left: 4px solid #007bff;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>🔑 AI Assistant Pro - API Key Configuration</h1>
-            
-            <div class="instructions">
-                <strong>Instructions:</strong> Enter your API keys for the AI providers you want to use. 
-                Your keys are encrypted and stored securely. You only need to configure the providers you plan to use.
-            </div>
-            
-            <form id="configForm">
-                <div class="provider-section">
-                    <h3>🤖 OpenAI (GPT-4, GPT-3.5)</h3>
-                    <input type="text" id="openai_key" placeholder="sk-..." />
-                    <button type="button" onclick="saveKey('openai')">Save OpenAI Key</button>
-                    <div id="openai_status" class="status"></div>
-                </div>
-                
-                <div class="provider-section">
-                    <h3>🧠 Anthropic Claude</h3>
-                    <input type="text" id="claude_key" placeholder="sk-ant-..." />
-                    <button type="button" onclick="saveKey('claude')">Save Claude Key</button>
-                    <div id="claude_status" class="status"></div>
-                </div>
-                
-                <div class="provider-section">
-                    <h3>🔍 Google Gemini</h3>
-                    <input type="text" id="gemini_key" placeholder="AI..." />
-                    <button type="button" onclick="saveKey('gemini')">Save Gemini Key</button>
-                    <div id="gemini_status" class="status"></div>
-                </div>
-            </form>
-        </div>
-        
-        <script>
-            function showStatus(provider, message, isError = false) {
-                const statusEl = document.getElementById(provider + '_status');
-                statusEl.textContent = message;
-                statusEl.className = 'status ' + (isError ? 'error' : 'success');
-                statusEl.style.display = 'block';
-            }
-            
-            async function saveKey(provider) {
-                const keyInput = document.getElementById(provider + '_key');
-                const apiKey = keyInput.value.trim();
-                
-                if (!apiKey) {
-                    showStatus(provider, 'Please enter a valid API key', true);
-                    return;
-                }
-                
-                try {
-                    const response = await fetch('/api/save-key', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            provider: provider,
-                            api_key: apiKey
-                        })
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (response.ok) {
-                        showStatus(provider, '✅ API key saved successfully!');
-                        keyInput.value = '';
-                    } else {
-                        showStatus(provider, '❌ Error: ' + result.error, true);
-                    }
-                } catch (error) {
-                    showStatus(provider, '❌ Network error: ' + error.message, true);
-                }
-            }
-        </script>
-    </body>
-    </html>
-    """
+    """Return the modern glassmorphism HTML configuration page"""
+    with open('web-portal.html', 'r') as f:
+        return f.read()
 
 def lambda_handler(event, context):
     """Main Lambda handler for web portal"""
@@ -268,8 +108,50 @@ def lambda_handler(event, context):
                 'body': get_configuration_page()
             }
         
+        elif http_method == 'POST' and path == '/api/configure':
+            # Handle modern API key configuration
+            try:
+                body = json.loads(event.get('body', '{}'))
+                provider = body.get('provider')
+                api_key = body.get('apiKey')
+                user_id = body.get('userId')
+                
+                if not provider or not api_key or not user_id:
+                    return {
+                        'statusCode': 400,
+                        'headers': {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*'
+                        },
+                        'body': json.dumps({'error': 'Provider, API key, and User ID are required'})
+                    }
+                
+                # Encrypt and store the API key
+                encrypted_key = encrypt_api_key(api_key)
+                store_api_key(user_id, provider, encrypted_key)
+                
+                return {
+                    'statusCode': 200,
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    'body': json.dumps({'message': f'API key for {provider} saved successfully'})
+                }
+                
+            except Exception as e:
+                logger.error(f"Error saving API key: {str(e)}")
+                return {
+                    'statusCode': 500,
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    'body': json.dumps({'error': 'Internal server error'})
+                }
+        
         elif http_method == 'POST' and path == '/api/save-key':
-            # Handle API key saving
+            # Handle legacy API key saving
             try:
                 body = json.loads(event.get('body', '{}'))
                 provider = body.get('provider')

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant Pro - API Configuration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e6ed;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #a0aec0;
+            font-weight: 400;
+        }
+
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #f7fafc;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #cbd5e0;
+            margin-bottom: 0.5rem;
+        }
+
+        .input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #f7fafc;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .input::placeholder {
+            color: #718096;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .status {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status.success {
+            background: rgba(56, 178, 172, 0.1);
+            border: 1px solid rgba(56, 178, 172, 0.3);
+            color: #68d391;
+        }
+
+        .status.error {
+            background: rgba(245, 101, 101, 0.1);
+            border: 1px solid rgba(245, 101, 101, 0.3);
+            color: #fc8181;
+        }
+
+        .provider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .provider-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .provider-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .provider-card.active {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+        }
+
+        .provider-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #f7fafc;
+        }
+
+        .provider-desc {
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .instructions h3 {
+            color: #f7fafc;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .instructions ol {
+            color: #cbd5e0;
+            padding-left: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="logo">AI Assistant Pro</h1>
+            <p class="subtitle">Configure your API keys for seamless AI interactions</p>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    API Configuration
+                </h2>
+
+                <div class="status" id="status"></div>
+
+                <div class="form-group">
+                    <label class="label">Select Provider</label>
+                    <div class="provider-grid">
+                        <div class="provider-card" data-provider="openai">
+                            <div class="provider-name">OpenAI</div>
+                            <div class="provider-desc">GPT-3.5 & GPT-4</div>
+                        </div>
+                        <div class="provider-card" data-provider="claude">
+                            <div class="provider-name">Claude</div>
+                            <div class="provider-desc">Anthropic Claude</div>
+                        </div>
+                        <div class="provider-card" data-provider="gemini">
+                            <div class="provider-name">Gemini</div>
+                            <div class="provider-desc">Google Gemini</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="apiForm">
+                    <div class="form-group">
+                        <label class="label" for="apiKey">API Key</label>
+                        <input type="password" id="apiKey" class="input" placeholder="Enter your API key" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label" for="userId">User ID</label>
+                        <input type="text" id="userId" class="input" placeholder="Your Alexa User ID" required>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <span id="btnText">Save API Key</span>
+                        <div class="loading" id="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 12l2 2 4-4"/>
+                        <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+                        <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+                    </svg>
+                    Setup Instructions
+                </h2>
+
+                <div class="instructions">
+                    <h3>How to get your API keys:</h3>
+                    <ol>
+                        <li><strong>OpenAI:</strong> Visit <a href="https://platform.openai.com/api-keys" target="_blank" style="color: #667eea;">platform.openai.com/api-keys</a></li>
+                        <li><strong>Claude:</strong> Visit <a href="https://console.anthropic.com/" target="_blank" style="color: #667eea;">console.anthropic.com</a></li>
+                        <li><strong>Gemini:</strong> Visit <a href="https://makersuite.google.com/app/apikey" target="_blank" style="color: #667eea;">makersuite.google.com</a></li>
+                    </ol>
+                </div>
+
+                <div class="instructions">
+                    <h3>How to find your User ID:</h3>
+                    <ol>
+                        <li>Open your Alexa app</li>
+                        <li>Go to Settings → Account</li>
+                        <li>Your User ID is displayed there</li>
+                    </ol>
+                </div>
+
+                <div class="instructions">
+                    <h3>Voice Commands:</h3>
+                    <ol>
+                        <li>"Alexa, open AI Assistant Pro"</li>
+                        <li>"Ask OpenAI, what is machine learning?"</li>
+                        <li>"Set Claude as my default"</li>
+                        <li>"Help" for more commands</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>AI Assistant Pro - Multi-Provider LLM Alexa Skill</p>
+            <p>Secure API key storage with AWS KMS encryption</p>
+        </div>
+    </div>
+
+    <script>
+        let selectedProvider = null;
+
+        // Provider selection
+        document.querySelectorAll('.provider-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedProvider = card.dataset.provider;
+            });
+        });
+
+        // Form submission
+        document.getElementById('apiForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!selectedProvider) {
+                showStatus('Please select a provider first', 'error');
+                return;
+            }
+
+            const apiKey = document.getElementById('apiKey').value;
+            const userId = document.getElementById('userId').value;
+
+            if (!apiKey || !userId) {
+                showStatus('Please fill in all fields', 'error');
+                return;
+            }
+
+            showLoading(true);
+            hideStatus();
+
+            try {
+                const response = await fetch('/api/configure', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        provider: selectedProvider,
+                        apiKey: apiKey,
+                        userId: userId
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showStatus(`API key for ${selectedProvider} saved successfully!`, 'success');
+                    document.getElementById('apiForm').reset();
+                    document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('active'));
+                    selectedProvider = null;
+                } else {
+                    showStatus(result.error || 'Failed to save API key', 'error');
+                }
+            } catch (error) {
+                showStatus('Network error. Please try again.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+        }
+
+        function hideStatus() {
+            document.getElementById('status').style.display = 'none';
+        }
+
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            const btnText = document.getElementById('btnText');
+            
+            if (show) {
+                loading.style.display = 'block';
+                btnText.style.display = 'none';
+            } else {
+                loading.style.display = 'none';
+                btnText.style.display = 'block';
+            }
+        }
+
+        // Auto-focus first provider card
+        document.querySelector('.provider-card').click();
+    </script>
+</body>
+</html>
