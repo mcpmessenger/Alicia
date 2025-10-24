@@ -85,8 +85,193 @@ def store_api_key(user_id: str, provider: str, encrypted_key: bytes):
 
 def get_configuration_page():
     """Return the modern glassmorphism HTML configuration page"""
-    with open('web-portal.html', 'r') as f:
-        return f.read()
+    # Return a simple HTML page for now
+    return """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AI Assistant Pro - API Configuration</title>
+        <style>
+            body {
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+                min-height: 100vh;
+                color: #e0e6ed;
+                margin: 0;
+                padding: 2rem;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+            .card {
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 20px;
+                padding: 2rem;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+            .logo {
+                font-size: 2.5rem;
+                font-weight: 700;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            .label {
+                display: block;
+                font-size: 0.9rem;
+                font-weight: 500;
+                color: #cbd5e0;
+                margin-bottom: 0.5rem;
+            }
+            .input {
+                width: 100%;
+                padding: 0.875rem 1rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                color: #f7fafc;
+                font-size: 0.95rem;
+                box-sizing: border-box;
+            }
+            .input:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+            .btn {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border: none;
+                padding: 0.875rem 2rem;
+                border-radius: 12px;
+                color: white;
+                font-weight: 600;
+                font-size: 0.95rem;
+                cursor: pointer;
+                width: 100%;
+                margin-top: 1rem;
+            }
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            }
+            .status {
+                padding: 1rem;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+                display: none;
+            }
+            .status.success {
+                background: rgba(56, 178, 172, 0.1);
+                border: 1px solid rgba(56, 178, 172, 0.3);
+                color: #68d391;
+            }
+            .status.error {
+                background: rgba(245, 101, 101, 0.1);
+                border: 1px solid rgba(245, 101, 101, 0.3);
+                color: #fc8181;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1 class="logo">AI Assistant Pro</h1>
+                <p>Configure your API keys for seamless AI interactions</p>
+            </div>
+            
+            <div class="card">
+                <h2>API Configuration</h2>
+                
+                <div class="status" id="status"></div>
+                
+                <form id="apiForm">
+                    <div class="form-group">
+                        <label class="label" for="provider">Provider</label>
+                        <select id="provider" class="input" required>
+                            <option value="">Select a provider</option>
+                            <option value="openai">OpenAI (GPT-3.5 & GPT-4)</option>
+                            <option value="claude">Claude (Anthropic)</option>
+                            <option value="gemini">Gemini (Google)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label" for="apiKey">API Key</label>
+                        <input type="password" id="apiKey" class="input" placeholder="Enter your API key" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label" for="userId">User ID</label>
+                        <input type="text" id="userId" class="input" placeholder="Your Alexa User ID" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">Save API Key</button>
+                </form>
+            </div>
+        </div>
+        
+        <script>
+            document.getElementById('apiForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const provider = document.getElementById('provider').value;
+                const apiKey = document.getElementById('apiKey').value;
+                const userId = document.getElementById('userId').value;
+                
+                if (!provider || !apiKey || !userId) {
+                    showStatus('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                try {
+                    const response = await fetch('/api/configure', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            provider: provider,
+                            apiKey: apiKey,
+                            userId: userId
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        showStatus(`API key for ${provider} saved successfully!`, 'success');
+                        document.getElementById('apiForm').reset();
+                    } else {
+                        showStatus(result.error || 'Failed to save API key', 'error');
+                    }
+                } catch (error) {
+                    showStatus('Network error. Please try again.', 'error');
+                }
+            });
+            
+            function showStatus(message, type) {
+                const status = document.getElementById('status');
+                status.textContent = message;
+                status.className = `status ${type}`;
+                status.style.display = 'block';
+            }
+        </script>
+    </body>
+    </html>
+    """
 
 def lambda_handler(event, context):
     """Main Lambda handler for web portal"""
