@@ -243,27 +243,43 @@ def lambda_handler(event, context):
         # Initialize skill handler
         skill = AIAssistantSkill()
         
-        # Extract user ID and intent
+        # Extract user ID
         user_id = event['session']['user']['userId']
-        intent_name = event['request']['intent']['name']
+        request_type = event['request']['type']
         
-        if intent_name == 'LLMQueryIntent':
-            # Handle LLM query with provider detection
-            query = event['request']['intent']['slots']['Query']['value']
-            response_text = skill.handle_llm_query(user_id, query)
+        # Handle different request types
+        if request_type == 'LaunchRequest':
+            # Welcome message when skill is opened
+            response_text = "Welcome to AI Assistant Pro! You can ask me questions using different AI providers. Say 'Ask OpenAI, what is machine learning?' or set a default provider by saying 'Set Claude as my default'. To get started, you'll need to configure your API keys in the Alexa app."
             
-        elif intent_name == 'SetDefaultProviderIntent':
-            # Set default provider
-            provider = event['request']['intent']['slots']['Provider']['value'].lower()
-            response_text = skill.set_default_provider(user_id, provider)
+        elif request_type == 'IntentRequest':
+            # Handle intent-based requests
+            intent_name = event['request']['intent']['name']
             
-        elif intent_name == 'ClearContextIntent':
-            # Clear session context
-            response_text = skill.clear_context(user_id)
-            
-        elif intent_name == 'AMAZON.HelpIntent':
-            # Provide help
-            response_text = "AI Assistant Pro allows you to interact with multiple AI providers. You can say 'Ask OpenAI, what is the capital of France?' or set a default provider by saying 'Set Claude as my default'. To link your API keys, check the Alexa app for instructions."
+            if intent_name == 'LLMQueryIntent':
+                # Handle LLM query with provider detection
+                query = event['request']['intent']['slots']['Query']['value']
+                response_text = skill.handle_llm_query(user_id, query)
+                
+            elif intent_name == 'SetDefaultProviderIntent':
+                # Set default provider
+                provider = event['request']['intent']['slots']['Provider']['value'].lower()
+                response_text = skill.set_default_provider(user_id, provider)
+                
+            elif intent_name == 'ClearContextIntent':
+                # Clear session context
+                response_text = skill.clear_context(user_id)
+                
+            elif intent_name == 'AMAZON.HelpIntent':
+                # Provide help
+                response_text = "AI Assistant Pro allows you to interact with multiple AI providers. You can say 'Ask OpenAI, what is the capital of France?' or set a default provider by saying 'Set Claude as my default'. To link your API keys, check the Alexa app for instructions."
+                
+            else:
+                response_text = "I didn't understand that. You can ask me a question or say 'help' for instructions."
+                
+        elif request_type == 'SessionEndedRequest':
+            # Handle session end
+            response_text = "Goodbye! Thanks for using AI Assistant Pro."
             
         else:
             response_text = "I didn't understand that. You can ask me a question or say 'help' for instructions."
