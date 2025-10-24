@@ -93,9 +93,15 @@ def lambda_handler(event, context):
     logger.info(f"Received event: {json.dumps(event)}")
     
     try:
-        # Handle different HTTP methods and paths
-        http_method = event.get('httpMethod', 'GET')
-        path = event.get('path', '/')
+        # Handle Lambda Function URL format
+        http_method = event.get('requestContext', {}).get('http', {}).get('method', 'GET')
+        path = event.get('rawPath', '/')
+        
+        # Fallback for API Gateway format
+        if not http_method:
+            http_method = event.get('httpMethod', 'GET')
+        if path == '/':
+            path = event.get('path', '/')
         
         if http_method == 'GET' and path == '/':
             # Return configuration page
