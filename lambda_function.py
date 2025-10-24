@@ -154,15 +154,29 @@ class AIAssistantSkill:
             logger.error(f"Error updating session context: {str(e)}")
     
     def handle_llm_query(self, user_id: str, query: str, provider: str = None) -> str:
-        """Handle LLM query with specified or default provider"""
+        """Handle LLM query with provider detection from query text"""
         try:
-            # Get user preferences
-            preferences = self.get_user_preferences(user_id)
+            # Detect provider from query text if not specified
             if not provider:
-                provider = preferences['default_provider']
+                query_lower = query.lower()
+                if 'openai' in query_lower or 'gpt' in query_lower:
+                    provider = 'openai'
+                elif 'claude' in query_lower:
+                    provider = 'claude'
+                elif 'gemini' in query_lower or 'google' in query_lower:
+                    provider = 'gemini'
+                else:
+                    # Use default provider
+                    preferences = self.get_user_preferences(user_id)
+                    provider = preferences['default_provider']
             
             if not provider:
-                return "Please set a default provider or specify which AI to use. Say 'Set OpenAI as my default' or 'Ask Gemini, your question here'."
+                return "Please set a default provider or specify which AI to use. Say 'Set OpenAI as my default' or 'Ask OpenAI, your question here'."
+            
+            # Clean the query by removing provider names
+            clean_query = query
+            for provider_name in ['OpenAI', 'Claude', 'Gemini', 'GPT']:
+                clean_query = clean_query.replace(provider_name, '').strip()
             
             # Get API key for the provider
             api_key = self.get_user_api_key(user_id, provider)
@@ -176,13 +190,14 @@ class AIAssistantSkill:
             llm_provider = self.providers[provider](api_key)
             
             # Get session context
+            preferences = self.get_user_preferences(user_id)
             context = preferences['session_context']
             
             # Generate response
-            response = llm_provider.generate_response(query, context)
+            response = llm_provider.generate_response(clean_query, context)
             
             # Update session context with the conversation
-            new_context = f"{context}\nUser: {query}\nAssistant: {response}"
+            new_context = f"{context}\nUser: {clean_query}\nAssistant: {response}"
             self.update_session_context(user_id, new_context)
             
             return response
@@ -233,15 +248,9 @@ def lambda_handler(event, context):
         intent_name = event['request']['intent']['name']
         
         if intent_name == 'LLMQueryIntent':
-            # Handle LLM query (uses default provider)
+            # Handle LLM query with provider detection
             query = event['request']['intent']['slots']['Query']['value']
             response_text = skill.handle_llm_query(user_id, query)
-            
-        elif intent_name == 'LLMQueryWithProviderIntent':
-            # Handle LLM query with specific provider
-            query = event['request']['intent']['slots']['Query']['value']
-            provider = event['request']['intent']['slots']['Provider']['value'].lower()
-            response_text = skill.handle_llm_query(user_id, query, provider)
             
         elif intent_name == 'SetDefaultProviderIntent':
             # Set default provider

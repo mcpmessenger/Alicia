@@ -21,32 +21,16 @@
             "I need help with {Query}",
             "Tell me about {Query}",
             "Give me information about {Query}",
-            "What can you tell me about {Query}"
-          ]
-        },
-        {
-          "name": "LLMQueryWithProviderIntent",
-          "slots": [
-            {
-              "name": "Provider",
-              "type": "ProviderType"
-            },
-            {
-              "name": "Query",
-              "type": "AMAZON.SearchQuery"
-            }
-          ],
-          "samples": [
-            "Ask {Provider} about {Query}",
-            "Use {Provider} for {Query}",
-            "Tell {Provider} about {Query}",
-            "Query {Provider} about {Query}",
-            "Ask {Provider} to explain {Query}",
-            "Use {Provider} to help with {Query}",
-            "Tell {Provider} to {Query}",
-            "Ask {Provider} what is {Query}",
-            "Use {Provider} to tell me about {Query}",
-            "Query {Provider} for {Query}"
+            "What can you tell me about {Query}",
+            "Ask OpenAI {Query}",
+            "Use Claude {Query}",
+            "Tell Gemini {Query}",
+            "Ask OpenAI to {Query}",
+            "Use Claude to {Query}",
+            "Tell Gemini to {Query}",
+            "OpenAI {Query}",
+            "Claude {Query}",
+            "Gemini {Query}"
           ]
         },
         {
