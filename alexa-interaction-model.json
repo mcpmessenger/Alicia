@@ -1,0 +1,109 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "ai assistant pro",
+      "intents": [
+        {
+          "name": "LLMQueryIntent",
+          "slots": [
+            {
+              "name": "Provider",
+              "type": "ProviderType"
+            },
+            {
+              "name": "Query",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "Ask {Provider} {Query}",
+            "Use {Provider} to {Query}",
+            "Tell {Provider} {Query}",
+            "Ask {Query}",
+            "What is {Query}",
+            "How do I {Query}",
+            "Explain {Query}",
+            "Help me with {Query}",
+            "Can you {Query}",
+            "I need help with {Query}"
+          ]
+        },
+        {
+          "name": "SetDefaultProviderIntent",
+          "slots": [
+            {
+              "name": "Provider",
+              "type": "ProviderType"
+            }
+          ],
+          "samples": [
+            "Set {Provider} as my default",
+            "Make {Provider} my default",
+            "Use {Provider} by default",
+            "Set default to {Provider}",
+            "Change default to {Provider}"
+          ]
+        },
+        {
+          "name": "ClearContextIntent",
+          "samples": [
+            "Start a new conversation",
+            "Clear context",
+            "Reset conversation",
+            "Forget everything",
+            "New conversation"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "name": "ProviderType",
+          "values": [
+            {
+              "name": {
+                "value": "OpenAI"
+              }
+            },
+            {
+              "name": {
+                "value": "Claude"
+              }
+            },
+            {
+              "name": {
+                "value": "Gemini"
+              }
+            },
+            {
+              "name": {
+                "value": "openai"
+              }
+            },
+            {
+              "name": {
+                "value": "claude"
+              }
+            },
+            {
+              "name": {
+                "value": "gemini"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

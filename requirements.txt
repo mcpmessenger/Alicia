@@ -1,0 +1,5 @@
+boto3>=1.34.0
+openai>=1.0.0
+anthropic>=0.7.0
+google-generativeai>=0.3.0
+botocore>=1.34.0

@@ -1,0 +1,209 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AI Assistant Pro Alexa Skill Infrastructure'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: 'dev'
+    AllowedValues: ['dev', 'staging', 'prod']
+
+Resources:
+  # KMS Customer Managed Key for API Key Encryption
+  APIKeyKMSKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: 'KMS Key for encrypting user API keys'
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: Enable IAM User Permissions
+            Effect: Allow
+            Principal:
+              AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+            Action: 'kms:*'
+            Resource: '*'
+
+  # DynamoDB Table for User Data
+  UserDataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'ai-assistant-users-${Environment}'
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  # Lambda Execution Role
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'ai-assistant-lambda-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DynamoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                Resource: !GetAtt UserDataTable.Arn
+        - PolicyName: KMSAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                  - kms:DescribeKey
+                Resource: !GetAtt APIKeyKMSKey.Arn
+
+  # Lambda Function for Alexa Skill
+  AlexaSkillLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'ai-assistant-alexa-skill-${Environment}'
+      Runtime: python3.11
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+          import os
+          from botocore.exceptions import ClientError
+          
+          def lambda_handler(event, context):
+              return {
+                  'statusCode': 200,
+                  'body': json.dumps('Hello from AI Assistant Pro!')
+              }
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Ref UserDataTable
+          KMS_KEY_ID: !Ref APIKeyKMSKey
+      Timeout: 30
+      MemorySize: 512
+
+  # API Gateway for Web Portal
+  WebPortalAPI:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub 'ai-assistant-web-portal-${Environment}'
+      Description: 'API Gateway for AI Assistant Pro web portal'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  # Lambda Function for Web Portal
+  WebPortalLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'ai-assistant-web-portal-${Environment}'
+      Runtime: python3.11
+      Handler: web_portal.lambda_handler
+      Role: !GetAtt WebPortalLambdaRole.Arn
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+          from botocore.exceptions import ClientError
+          
+          def lambda_handler(event, context):
+              return {
+                  'statusCode': 200,
+                  'headers': {
+                      'Content-Type': 'text/html',
+                      'Access-Control-Allow-Origin': '*'
+                  },
+                  'body': '<html><body><h1>AI Assistant Pro - API Key Configuration</h1></body></html>'
+              }
+      Timeout: 30
+      MemorySize: 256
+
+  # IAM Role for Web Portal Lambda
+  WebPortalLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'ai-assistant-web-portal-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: WebPortalAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                Resource: !GetAtt UserDataTable.Arn
+              - Effect: Allow
+                Action:
+                  - kms:Encrypt
+                  - kms:GenerateDataKey
+                Resource: !GetAtt APIKeyKMSKey.Arn
+
+  # S3 Bucket for Web Portal Static Assets
+  WebPortalBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'ai-assistant-web-portal-${Environment}-${AWS::AccountId}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+
+Outputs:
+  DynamoDBTableName:
+    Description: 'DynamoDB table for user data'
+    Value: !Ref UserDataTable
+    Export:
+      Name: !Sub '${AWS::StackName}-DynamoDBTable'
+  
+  KMSKeyId:
+    Description: 'KMS Key ID for API key encryption'
+    Value: !Ref APIKeyKMSKey
+    Export:
+      Name: !Sub '${AWS::StackName}-KMSKey'
+  
+  LambdaFunctionArn:
+    Description: 'Lambda function ARN for Alexa Skill'
+    Value: !GetAtt AlexaSkillLambda.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-LambdaFunction'
+  
+  WebPortalBucketName:
+    Description: 'S3 bucket for web portal'
+    Value: !Ref WebPortalBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-WebPortalBucket'
