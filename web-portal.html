@@ -320,7 +320,10 @@
 
                     <div class="form-group">
                         <label class="label" for="userId">User ID</label>
-                        <input type="text" id="userId" class="input" placeholder="Your Alexa User ID" required>
+                        <input type="text" id="userId" class="input" placeholder="Your Alexa User ID or email for testing" required>
+                        <small style="color: #a0aec0; font-size: 0.8rem; margin-top: 0.5rem; display: block;">
+                            💡 <strong>Tip:</strong> For testing, you can use your email address. For production, get your actual User ID from the Lambda logs.
+                        </small>
                     </div>
 
                     <button type="submit" class="btn">
@@ -354,10 +357,12 @@
                 <div class="instructions">
                     <h3>How to find your User ID:</h3>
                     <ol>
-                        <li>Open your Alexa app</li>
-                        <li>Go to Settings → Account</li>
-                        <li>Your User ID is displayed there</li>
+                        <li><strong>Easiest Method:</strong> Use the skill and check the logs</li>
+                        <li>Say "Alexa, open AI Assistant Pro"</li>
+                        <li>Check the Lambda logs in AWS Console</li>
+                        <li>Your User ID appears in the log entries</li>
                     </ol>
+                    <p><em>Alternative: Use any unique identifier like your email or phone number for testing purposes.</em></p>
                 </div>
 
                 <div class="instructions">
