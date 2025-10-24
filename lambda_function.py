@@ -4,9 +4,6 @@ import os
 import logging
 from botocore.exceptions import ClientError
 from typing import Dict, Any, Optional
-import openai
-import anthropic
-import google.generativeai as genai
 
 # Configure logging
 logger = logging.getLogger()
@@ -32,16 +29,19 @@ class OpenAIProvider(LLMProvider):
     
     def __init__(self, api_key: str):
         super().__init__(api_key)
-        openai.api_key = api_key
+        import openai
+        self.client = openai.OpenAI(api_key=api_key)
     
     def generate_response(self, prompt: str, context: str = "") -> str:
         try:
-            response = openai.ChatCompletion.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": "You are a helpful AI assistant."},
-                    {"role": "user", "content": f"{context}\n{prompt}"}
-                ],
+            messages = []
+            if context:
+                messages.append({"role": "system", "content": f"Previous context: {context}"})
+            messages.append({"role": "user", "content": prompt})
+            
+            response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=messages,
                 max_tokens=500,
                 temperature=0.7
             )
@@ -55,6 +55,7 @@ class AnthropicProvider(LLMProvider):
     
     def __init__(self, api_key: str):
         super().__init__(api_key)
+        import anthropic
         self.client = anthropic.Anthropic(api_key=api_key)
     
     def generate_response(self, prompt: str, context: str = "") -> str:
@@ -78,11 +79,13 @@ class GoogleProvider(LLMProvider):
     
     def __init__(self, api_key: str):
         super().__init__(api_key)
+        import google.generativeai as genai
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
     
     def generate_response(self, prompt: str, context: str = "") -> str:
         try:
+            import google.generativeai as genai
             response = self.model.generate_content(
                 f"{context}\n{prompt}",
                 generation_config=genai.types.GenerationConfig(
