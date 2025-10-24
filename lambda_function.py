@@ -233,10 +233,14 @@ def lambda_handler(event, context):
         intent_name = event['request']['intent']['name']
         
         if intent_name == 'LLMQueryIntent':
-            # Handle LLM query
+            # Handle LLM query (uses default provider)
             query = event['request']['intent']['slots']['Query']['value']
-            provider = event['request']['intent']['slots'].get('Provider', {}).get('value')
+            response_text = skill.handle_llm_query(user_id, query)
             
+        elif intent_name == 'LLMQueryWithProviderIntent':
+            # Handle LLM query with specific provider
+            query = event['request']['intent']['slots']['Query']['value']
+            provider = event['request']['intent']['slots']['Provider']['value'].lower()
             response_text = skill.handle_llm_query(user_id, query, provider)
             
         elif intent_name == 'SetDefaultProviderIntent':

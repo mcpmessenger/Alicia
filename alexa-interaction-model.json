@@ -7,6 +7,27 @@
           "name": "LLMQueryIntent",
           "slots": [
             {
+              "name": "Query",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "Ask {Query}",
+            "What is {Query}",
+            "How do I {Query}",
+            "Explain {Query}",
+            "Help me with {Query}",
+            "Can you {Query}",
+            "I need help with {Query}",
+            "Tell me about {Query}",
+            "Give me information about {Query}",
+            "What can you tell me about {Query}"
+          ]
+        },
+        {
+          "name": "LLMQueryWithProviderIntent",
+          "slots": [
+            {
               "name": "Provider",
               "type": "ProviderType"
             },
@@ -16,16 +37,16 @@
             }
           ],
           "samples": [
-            "Ask {Provider} {Query}",
-            "Use {Provider} to {Query}",
-            "Tell {Provider} {Query}",
-            "Ask {Query}",
-            "What is {Query}",
-            "How do I {Query}",
-            "Explain {Query}",
-            "Help me with {Query}",
-            "Can you {Query}",
-            "I need help with {Query}"
+            "Ask {Provider} about {Query}",
+            "Use {Provider} for {Query}",
+            "Tell {Provider} about {Query}",
+            "Query {Provider} about {Query}",
+            "Ask {Provider} to explain {Query}",
+            "Use {Provider} to help with {Query}",
+            "Tell {Provider} to {Query}",
+            "Ask {Provider} what is {Query}",
+            "Use {Provider} to tell me about {Query}",
+            "Query {Provider} for {Query}"
           ]
         },
         {
