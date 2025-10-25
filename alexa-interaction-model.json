@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "ai assistant pro",
+      "invocationName": "alicia",
       "intents": [
         {
           "name": "LLMQueryIntent",
@@ -30,7 +30,10 @@
             "Tell Gemini to {Query}",
             "OpenAI {Query}",
             "Claude {Query}",
-            "Gemini {Query}"
+            "Gemini {Query}",
+            "Ask OpenAI what is {Query}",
+            "Ask Claude about {Query}",
+            "Ask Gemini to explain {Query}"
           ]
         },
         {
