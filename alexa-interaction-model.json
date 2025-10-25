@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "alicia",
+      "invocationName": "ai pro",
       "intents": [
         {
           "name": "LLMQueryIntent",
