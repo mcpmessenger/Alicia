@@ -9,6 +9,178 @@ import urllib.parse
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+def get_apl_document():
+    """Return the APL document for display devices"""
+    return {
+        "type": "APL",
+        "version": "2023.3",
+        "mainTemplate": {
+            "parameters": ["payload"],
+            "items": [
+                {
+                    "type": "Container",
+                    "width": "100vw",
+                    "height": "100vh",
+                    "direction": "column",
+                    "justifyContent": "spaceBetween",
+                    "background": {
+                        "type": "LinearGradient",
+                        "colorRange": ["#0f0f23", "#1a1a2e", "#16213e"],
+                        "inputRange": [0, 0.5, 1],
+                        "angle": 135
+                    },
+                    "items": [
+                        {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "auto",
+                            "paddingTop": 40,
+                            "paddingBottom": 20,
+                            "paddingLeft": 40,
+                            "paddingRight": 40,
+                            "items": [
+                                {
+                                    "type": "Container",
+                                    "direction": "row",
+                                    "alignItems": "center",
+                                    "justifyContent": "center",
+                                    "items": [
+                                        {
+                                            "type": "Container",
+                                            "width": 60,
+                                            "height": 60,
+                                            "borderRadius": 30,
+                                            "background": {
+                                                "type": "LinearGradient",
+                                                "colorRange": ["#00d4ff", "#0099cc", "#0066ff"],
+                                                "inputRange": [0, 0.5, 1],
+                                                "angle": 45
+                                            },
+                                            "boxShadow": "0 0 20px rgba(0, 212, 255, 0.3)",
+                                            "items": [
+                                                {
+                                                    "type": "Text",
+                                                    "text": "🤖",
+                                                    "fontSize": 24,
+                                                    "color": "white",
+                                                    "textAlign": "center",
+                                                    "textAlignVertical": "center"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "Container",
+                                            "paddingLeft": 20,
+                                            "items": [
+                                                {
+                                                    "type": "Text",
+                                                    "text": "AI Pro",
+                                                    "fontSize": 32,
+                                                    "fontWeight": "bold",
+                                                    "color": {
+                                                        "type": "LinearGradient",
+                                                        "colorRange": ["#00d4ff", "#0099cc", "#0066ff"],
+                                                        "inputRange": [0, 0.5, 1],
+                                                        "angle": 45
+                                                    }
+                                                },
+                                                {
+                                                    "type": "Text",
+                                                    "text": "Multi-Provider AI Assistant",
+                                                    "fontSize": 14,
+                                                    "color": "#a0a0a0",
+                                                    "marginTop": 5
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "auto",
+                            "paddingLeft": 40,
+                            "paddingRight": 40,
+                            "paddingBottom": 20,
+                            "items": [
+                                {
+                                    "type": "Container",
+                                    "width": "100%",
+                                    "background": "rgba(255, 255, 255, 0.05)",
+                                    "borderRadius": 20,
+                                    "borderWidth": 1,
+                                    "borderColor": "rgba(255, 255, 255, 0.1)",
+                                    "padding": 30,
+                                    "boxShadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
+                                    "items": [
+                                        {
+                                            "type": "Text",
+                                            "text": "${payload.responseText}",
+                                            "fontSize": 18,
+                                            "color": "#ffffff",
+                                            "textAlign": "left",
+                                            "lineHeight": 1.6,
+                                            "width": "100%"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "auto",
+                            "paddingLeft": 40,
+                            "paddingRight": 40,
+                            "paddingBottom": 40,
+                            "items": [
+                                {
+                                    "type": "Container",
+                                    "direction": "row",
+                                    "justifyContent": "spaceBetween",
+                                    "alignItems": "center",
+                                    "items": [
+                                        {
+                                            "type": "Container",
+                                            "direction": "row",
+                                            "alignItems": "center",
+                                            "items": [
+                                                {
+                                                    "type": "Container",
+                                                    "width": 8,
+                                                    "height": 8,
+                                                    "borderRadius": 4,
+                                                    "background": "#00ff00",
+                                                    "boxShadow": "0 0 10px rgba(0, 255, 0, 0.5)",
+                                                    "marginRight": 8
+                                                },
+                                                {
+                                                    "type": "Text",
+                                                    "text": "System Online",
+                                                    "fontSize": 12,
+                                                    "color": "#00ff00",
+                                                    "fontWeight": "500"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "Text",
+                                            "text": "© 2025 AI Pro",
+                                            "fontSize": 12,
+                                            "color": "#a0a0a0"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+
 def lambda_handler(event, context):
     """Secure version - uses environment variables and DynamoDB for API keys"""
     logger.info(f"Received event: {json.dumps(event)}")
@@ -227,7 +399,15 @@ def lambda_handler(event, context):
         else:
             response_text = "I didn't understand that. You can ask me a question or say 'help' for instructions."
         
-        return {
+        # Check if device supports display
+        supports_display = False
+        if 'context' in event and 'System' in event['context']:
+            system = event['context']['System']
+            if 'device' in system and 'supportedInterfaces' in system['device']:
+                supported_interfaces = system['device']['supportedInterfaces']
+                supports_display = 'Alexa.Presentation.APL' in supported_interfaces
+        
+        response = {
             'version': '1.0',
             'response': {
                 'outputSpeech': {
@@ -237,6 +417,23 @@ def lambda_handler(event, context):
                 'shouldEndSession': False
             }
         }
+        
+        # Add APL directive if device supports display
+        if supports_display:
+            response['response']['directives'] = [
+                {
+                    'type': 'Alexa.Presentation.APL.RenderDocument',
+                    'token': 'ai-pro-document',
+                    'document': get_apl_document(),
+                    'datasources': {
+                        'payload': {
+                            'responseText': response_text
+                        }
+                    }
+                }
+            ]
+        
+        return response
         
     except Exception as e:
         logger.error(f"Error in lambda_handler: {str(e)}")
