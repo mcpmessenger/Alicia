@@ -1,0 +1,383 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "ai pro",
+      "intents": [
+        {
+          "name": "LLMQueryIntent",
+          "slots": [
+            {
+              "name": "Query",
+              "type": "AMAZON.SearchQuery"
+            },
+            {
+              "name": "Price",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "Ask {Query}",
+            "What is {Query}",
+            "How do I {Query}",
+            "Explain {Query}",
+            "Help me with {Query}",
+            "Can you {Query}",
+            "I need help with {Query}",
+            "Tell me about {Query}",
+            "Give me information about {Query}",
+            "What can you tell me about {Query}",
+            "Ask OpenAI {Query}",
+            "Use Claude {Query}",
+            "Tell Gemini {Query}",
+            "Ask OpenAI to {Query}",
+            "Use Claude to {Query}",
+            "Tell Gemini to {Query}",
+            "OpenAI {Query}",
+            "Claude {Query}",
+            "Gemini {Query}",
+            "Ask OpenAI what is {Query}",
+            "Ask Claude about {Query}",
+            "Ask Gemini to explain {Query}"
+          ]
+        },
+        {
+          "name": "AddToCartIntent",
+          "slots": [
+            {
+              "name": "ItemNumber",
+              "type": "AMAZON.NUMBER"
+            },
+            {
+              "name": "ProductName",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "Add item {ItemNumber} to cart",
+            "Add item {ItemNumber}",
+            "Add number {ItemNumber}",
+            "Add product {ItemNumber}",
+            "Put item {ItemNumber} in my cart",
+            "I want item {ItemNumber}",
+            "Add the {ItemNumber} one",
+            "Choose item {ItemNumber}",
+            "Select item {ItemNumber}",
+            "I'll take item {ItemNumber}",
+            "Add {ProductName} to cart",
+            "Add {ProductName}",
+            "I want {ProductName}",
+            "Put {ProductName} in my cart",
+            "I'll take {ProductName}",
+            "Choose {ProductName}",
+            "Select {ProductName}"
+          ]
+        },
+        {
+          "name": "ViewCartIntent",
+          "samples": [
+            "Show my cart",
+            "View cart",
+            "What's in my cart",
+            "Show shopping cart",
+            "View shopping cart",
+            "What did I add",
+            "Show me my items",
+            "Check cart",
+            "Cart status",
+            "My cart"
+          ]
+        },
+        {
+          "name": "CheckoutIntent",
+          "samples": [
+            "Checkout",
+            "Checkout now",
+            "Proceed to checkout",
+            "Complete purchase",
+            "Buy now",
+            "Purchase now",
+            "I'm ready to checkout",
+            "Let's checkout",
+            "Complete order",
+            "Finalize purchase",
+            "Buy these items",
+            "Place order"
+          ]
+        },
+        {
+          "name": "RemoveFromCartIntent",
+          "slots": [
+            {
+              "name": "ItemNumber",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "Remove item {ItemNumber}",
+            "Delete item {ItemNumber}",
+            "Remove item {ItemNumber} from cart",
+            "Take out item {ItemNumber}",
+            "Delete item {ItemNumber} from cart",
+            "Remove number {ItemNumber}",
+            "I don't want item {ItemNumber}",
+            "Cancel item {ItemNumber}"
+          ]
+        },
+        {
+          "name": "ClearCartIntent",
+          "samples": [
+            "Clear cart",
+            "Empty cart",
+            "Remove all items",
+            "Clear my cart",
+            "Delete everything",
+            "Start over",
+            "Clear shopping cart",
+            "Empty shopping cart"
+          ]
+        },
+        {
+          "name": "ConfirmPurchaseIntent",
+          "samples": [
+            "Yes buy it",
+            "Confirm purchase",
+            "Yes checkout",
+            "Yes I'm sure",
+            "Confirm",
+            "Yes place order",
+            "Complete order",
+            "Yes"
+          ]
+        },
+        {
+          "name": "CancelPurchaseIntent",
+          "samples": [
+            "No cancel",
+            "Cancel purchase",
+            "Don't buy",
+            "Cancel order",
+            "No thanks",
+            "Nevermind",
+            "Cancel",
+            "No"
+          ]
+        },
+        {
+          "name": "ViewOrderHistoryIntent",
+          "samples": [
+            "Show my orders",
+            "View order history",
+            "What did I buy",
+            "Past orders",
+            "Order history",
+            "My orders",
+            "Recent purchases",
+            "Purchase history"
+          ]
+        },
+        {
+          "name": "TrackOrderIntent",
+          "slots": [
+            {
+              "name": "OrderNumber",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "Track my order",
+            "Where is my order",
+            "Order status",
+            "Track order {OrderNumber}",
+            "Check order {OrderNumber}",
+            "Where is order {OrderNumber}",
+            "Status of order {OrderNumber}",
+            "Track package"
+          ]
+        },
+        {
+          "name": "SetDefaultProviderIntent",
+          "slots": [
+            {
+              "name": "Provider",
+              "type": "ProviderType"
+            }
+          ],
+          "samples": [
+            "Set {Provider} as my default",
+            "Make {Provider} my default",
+            "Use {Provider} by default",
+            "Set default to {Provider}",
+            "Change default to {Provider}"
+          ]
+        },
+        {
+          "name": "ShoppingIntent",
+          "slots": [
+            {
+              "name": "Product",
+              "type": "AMAZON.SearchQuery"
+            },
+            {
+              "name": "Price",
+              "type": "AMAZON.NUMBER"
+            },
+            {
+              "name": "Category",
+              "type": "ProductCategory"
+            }
+          ],
+          "samples": [
+            "shop for {Product}",
+            "find me {Product}",
+            "find products {Product}",
+            "Search for {Product}",
+            "Show me {Product}",
+            "I want to buy {Product}",
+            "I need to purchase {Product}",
+            "What's the best {Product}",
+            "Recommend {Product}",
+            "Find the best {Product}",
+            "Search for the best {Product}",
+            "Show me the best {Product}",
+            "look for {Product}",
+            "get me {Product}",
+            "buy {Product}"
+          ]
+        },
+        {
+          "name": "ClearContextIntent",
+          "samples": [
+            "Start a new conversation",
+            "Clear context",
+            "Reset conversation",
+            "Forget everything",
+            "New conversation"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "name": "ProviderType",
+          "values": [
+            {
+              "name": {
+                "value": "OpenAI"
+              }
+            },
+            {
+              "name": {
+                "value": "Claude"
+              }
+            },
+            {
+              "name": {
+                "value": "Gemini"
+              }
+            }
+          ]
+        },
+        {
+          "name": "ProductCategory",
+          "values": [
+            {
+              "name": {
+                "value": "electronics"
+              }
+            },
+            {
+              "name": {
+                "value": "home"
+              }
+            },
+            {
+              "name": {
+                "value": "clothing"
+              }
+            },
+            {
+              "name": {
+                "value": "books"
+              }
+            },
+            {
+              "name": {
+                "value": "toys"
+              }
+            },
+            {
+              "name": {
+                "value": "sports"
+              }
+            },
+            {
+              "name": {
+                "value": "beauty"
+              }
+            },
+            {
+              "name": {
+                "value": "health"
+              }
+            },
+            {
+              "name": {
+                "value": "automotive"
+              }
+            },
+            {
+              "name": {
+                "value": "garden"
+              }
+            },
+            {
+              "name": {
+                "value": "office"
+              }
+            },
+            {
+              "name": {
+                "value": "kitchen"
+              }
+            },
+            {
+              "name": {
+                "value": "furniture"
+              }
+            },
+            {
+              "name": {
+                "value": "jewelry"
+              }
+            },
+            {
+              "name": {
+                "value": "shoes"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+

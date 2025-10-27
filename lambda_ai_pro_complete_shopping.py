@@ -123,7 +123,9 @@ def create_order(user_id, cart):
 
 def get_apl_document_products(products, query):
     """Return APL document for product display with purchase options"""
-    # APL document for shopping products display
+    from lambda_ai_pro_shopping import get_shopping_apl_document
+    
+    # Use the enhanced APL document from file
     return {
         "type": "APL",
         "version": "2023.3",
