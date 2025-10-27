@@ -138,7 +138,7 @@ def get_apl_document_products(products, query):
                     "justifyContent": "spaceBetween",
                     "background": {
                         "type": "LinearGradient",
-                        "colorRange": ["#0f0f23", "#1a1a2e", "#16213e"],
+                        "colorRange": ["#2a3f5f", "#1e3a5f", "#16304e"],
                         "inputRange": [0, 0.5, 1],
                         "angle": 135
                     },
@@ -174,10 +174,10 @@ def get_apl_document_products(products, query):
                                 {
                                     "type": "Container",
                                     "width": "100%",
-                                    "background": "rgba(255, 255, 255, 0.05)",
+                                    "background": "rgba(255, 255, 255, 0.15)",
                                     "borderRadius": 20,
                                     "borderWidth": 1,
-                                    "borderColor": "rgba(255, 255, 255, 0.1)",
+                                    "borderColor": "rgba(255, 255, 255, 0.3)",
                                     "padding": 25,
                                     "marginBottom": 20,
                                     "boxShadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
@@ -292,7 +292,7 @@ def get_apl_document_cart(cart):
                     "direction": "column",
                     "background": {
                         "type": "LinearGradient",
-                        "colorRange": ["#0f0f23", "#1a1a2e", "#16213e"],
+                        "colorRange": ["#2a3f5f", "#1e3a5f", "#16304e"],
                         "inputRange": [0, 0.5, 1],
                         "angle": 135
                     },
@@ -317,7 +317,7 @@ def get_apl_document_cart(cart):
                                         {
                                             "type": "Container",
                                             "width": "100%",
-                                            "background": "rgba(0, 255, 136, 0.1)",
+                                            "background": "rgba(0, 255, 136, 0.2)",
                                             "borderRadius": 15,
                                             "borderWidth": 2,
                                             "borderColor": "#00ff88",
@@ -368,7 +368,7 @@ def get_apl_document_cart(cart):
                                     "type": "Container",
                                     "marginTop": 30,
                                     "padding": 30,
-                                    "background": "rgba(0, 212, 255, 0.1)",
+                                    "background": "rgba(0, 212, 255, 0.2)",
                                     "borderRadius": 20,
                                     "borderWidth": 2,
                                     "borderColor": "#00d4ff",
@@ -441,7 +441,7 @@ def get_apl_document_confirmation(order):
                     "justifyContent": "center",
                     "background": {
                         "type": "LinearGradient",
-                        "colorRange": ["#0f0f23", "#1a1a2e", "#16213e"],
+                        "colorRange": ["#2a3f5f", "#1e3a5f", "#16304e"],
                         "inputRange": [0, 0.5, 1],
                         "angle": 135
                     },
@@ -450,7 +450,7 @@ def get_apl_document_confirmation(order):
                             "type": "Container",
                             "width": "70%",
                             "padding": 50,
-                            "background": "rgba(0, 255, 136, 0.1)",
+                            "background": "rgba(0, 255, 136, 0.2)",
                             "borderRadius": 30,
                             "borderWidth": 3,
                             "borderColor": "#00ff88",
