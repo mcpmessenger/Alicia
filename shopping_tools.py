@@ -161,7 +161,7 @@ def get_all_products() -> List[Dict[str, Any]]:
             "reviews": 42921,
             "description": "1000W motor, 72oz pitcher, perfect for smoothies and frozen drinks",
             "category": "home",
-            "subcategory": "kitchen_appliances",
+            "subcategory": "blenders",
             "badge": "Best Seller"
         },
         {
@@ -239,8 +239,47 @@ def get_all_products() -> List[Dict[str, Any]]:
             "reviews": 12345,
             "description": "Variable speed control, aircraft-grade stainless steel blades",
             "category": "home",
-            "subcategory": "kitchen_appliances",
+            "subcategory": "blenders",
             "badge": "Editor's Choice"
+        },
+        {
+            "name": "NutriBullet Pro 900W Personal Blender 13 Piece Set",
+            "price": 79.99,
+            "asin": "B00QJGVH8M",
+            "url": f"https://www.amazon.com/dp/B00QJGVH8M?tag={AMAZON_PARTNER_TAG}",
+            "image_url": "https://m.media-amazon.com/images/I/81LHkA34MvL._AC_SL1500_.jpg",
+            "rating": 4.5,
+            "reviews": 78901,
+            "description": "900W motor, extracts nutrients, 13-piece set with cups and lids",
+            "category": "home",
+            "subcategory": "blenders",
+            "badge": "Best Value"
+        },
+        {
+            "name": "Magic Bullet Blender Small 11 Piece Personal Blender",
+            "price": 39.88,
+            "asin": "B00EI7DPI0",
+            "url": f"https://www.amazon.com/dp/B00EI7DPI0?tag={AMAZON_PARTNER_TAG}",
+            "image_url": "https://m.media-amazon.com/images/I/81EbrqK-OqL._AC_SL1500_.jpg",
+            "rating": 4.4,
+            "reviews": 123456,
+            "description": "11-piece set, blends smoothies in 10 seconds, dishwasher safe",
+            "category": "home",
+            "subcategory": "blenders",
+            "badge": "Budget Pick"
+        },
+        {
+            "name": "Oster Blender Pro 1200 with Glass Jar 6-Cup Capacity",
+            "price": 69.99,
+            "asin": "B00GJDMHQO",
+            "url": f"https://www.amazon.com/dp/B00GJDMHQO?tag={AMAZON_PARTNER_TAG}",
+            "image_url": "https://m.media-amazon.com/images/I/71pWKqMqyqL._AC_SL1500_.jpg",
+            "rating": 4.5,
+            "reviews": 45678,
+            "description": "1200W motor, 7 speeds, dual-direction blade, glass jar",
+            "category": "home",
+            "subcategory": "blenders",
+            "badge": "Top Rated"
         },
         {
             "name": "Breville BOV845BSS Smart Oven Pro Convection Toaster Oven",
@@ -1420,30 +1459,36 @@ def search_products(query: str, max_price: Optional[float] = None, category: Opt
     if category:
         all_products = [p for p in all_products if p.get('category') == category or p.get('subcategory') == category]
     
-    # Keyword search
+    # Keyword search - more intelligent matching
     query_lower = query.lower()
-    query_words = query_lower.split()
+    query_words = [w for w in query_lower.split() if len(w) > 2]  # Ignore tiny words
     
     scored_products = []
     for product in all_products:
         score = 0
         name_lower = product['name'].lower()
         desc_lower = product.get('description', '').lower()
+        subcategory = product.get('subcategory', '').lower()
         
         for word in query_words:
+            # Higher score for exact word matches in name
             if word in name_lower:
-                score += 10
+                score += 15
+            # Medium score for description matches
             elif word in desc_lower:
-                score += 3
-            elif word == product.get('subcategory', ''):
                 score += 5
+            # Bonus for subcategory match
+            if word in subcategory:
+                score += 10
         
-        if score > 0:
+        # Only include products with decent score (at least one match)
+        if score >= 10:
             product['_search_score'] = score
             scored_products.append(product)
     
+    # If NO matches at all, return empty list (no random products!)
     if not scored_products:
-        scored_products = all_products[:10]
+        return []
     
     # Filter by price
     if max_price:
@@ -1452,7 +1497,8 @@ def search_products(query: str, max_price: Optional[float] = None, category: Opt
     # Sort by score, then rating
     scored_products.sort(key=lambda x: (x.get('_search_score', 0), x.get('rating', 0)), reverse=True)
     
-    return scored_products[:5]
+    # Return all matches (up to 10 for better variety)
+    return scored_products[:10]
 
 def product_search_tool(query: str, max_price: Optional[float] = None, category: Optional[str] = None) -> str:
     """Main product search function"""

@@ -252,7 +252,7 @@ def get_apl_document_products(products, query):
                                                                     "text": "🛒 Say: Add item ${index+1}",
                                                                     "fontSize": 14,
                                                                     "fontWeight": "bold",
-                                                                    "color": "#ffffff",
+                                                                    "color": "#2d3748",
                                                                     "textAlign": "center"
                                                                 }
                                                             ]
@@ -286,7 +286,7 @@ def get_apl_document_cart(cart):
                     "direction": "column",
                     "background": {
                         "type": "LinearGradient",
-                        "colorRange": ["#2a3f5f", "#1e3a5f", "#16304e"],
+                        "colorRange": ["#f5f7fa", "#e8eaf0", "#dfe2e8"],
                         "inputRange": [0, 0.5, 1],
                         "angle": 135
                     },
@@ -300,7 +300,7 @@ def get_apl_document_cart(cart):
                                     "text": "🛒 Your Shopping Cart",
                                     "fontSize": 32,
                                     "fontWeight": "bold",
-                                    "color": "#00d4ff",
+                                            "color": "#667eea",
                                     "marginBottom": 30
                                 },
                                 {
@@ -311,10 +311,10 @@ def get_apl_document_cart(cart):
                                         {
                                             "type": "Container",
                                             "width": "100%",
-                                            "background": "rgba(0, 255, 136, 0.2)",
+                                            "background": "#ffffff",
                                             "borderRadius": 15,
                                             "borderWidth": 2,
-                                            "borderColor": "#00ff88",
+                                            "borderColor": "#48bb78",
                                             "padding": 20,
                                             "marginBottom": 15,
                                             "items": [
@@ -347,7 +347,7 @@ def get_apl_document_cart(cart):
                                                                     "text": "$${data.price}",
                                                                     "fontSize": 22,
                                                                     "fontWeight": "bold",
-                                                                    "color": "#00ff88",
+                                                                    "color": "#48bb78",
                                                                     "marginTop": 5
                                                                 }
                                                             ]
@@ -362,7 +362,7 @@ def get_apl_document_cart(cart):
                                     "type": "Container",
                                     "marginTop": 30,
                                     "padding": 30,
-                                    "background": "rgba(0, 212, 255, 0.2)",
+                                    "background": "#ffffff",
                                     "borderRadius": 20,
                                     "borderWidth": 2,
                                     "borderColor": "#00d4ff",
@@ -384,7 +384,7 @@ def get_apl_document_cart(cart):
                                                     "text": "$${payload.cartTotal}",
                                                     "fontSize": 36,
                                                     "fontWeight": "bold",
-                                                    "color": "#00ff88"
+                                                    "color": "#48bb78"
                                                 }
                                             ]
                                         },
@@ -404,7 +404,7 @@ def get_apl_document_cart(cart):
                                                     "text": "💳 Say: Checkout now",
                                                     "fontSize": 20,
                                                     "fontWeight": "bold",
-                                                    "color": "#0f0f23",
+                                                    "color": "#2d3748",
                                                     "textAlign": "center"
                                                 }
                                             ]
@@ -435,7 +435,7 @@ def get_apl_document_confirmation(order):
                     "justifyContent": "center",
                     "background": {
                         "type": "LinearGradient",
-                        "colorRange": ["#2a3f5f", "#1e3a5f", "#16304e"],
+                        "colorRange": ["#f5f7fa", "#e8eaf0", "#dfe2e8"],
                         "inputRange": [0, 0.5, 1],
                         "angle": 135
                     },
@@ -492,7 +492,7 @@ def get_apl_document_confirmation(order):
                                             "text": "$${payload.orderTotal}",
                                             "fontSize": 28,
                                             "fontWeight": "bold",
-                                            "color": "#00ff88"
+                                            "color": "#48bb78"
                                         }
                                     ]
                                 },
@@ -500,7 +500,7 @@ def get_apl_document_confirmation(order):
                                     "type": "Text",
                                     "text": "Tracking: ${payload.trackingNumber}",
                                     "fontSize": 16,
-                                    "color": "#00d4ff",
+                                            "color": "#667eea",
                                     "textAlign": "center",
                                     "marginBottom": 10
                                 },
