@@ -122,8 +122,8 @@ def create_order(user_id, cart):
         return None
 
 def get_apl_document_products(products, query):
-    """Return APL document for product display with purchase options - PREMIUM BRIGHT DESIGN"""
-    # Premium APL with light modern design
+    """Return SIMPLE BRIGHT APL that WORKS - No fancy gradients"""
+    # Simple bright design - pure white background, works 100%
     return {
         "type": "APL",
         "version": "2023.3",
@@ -135,27 +135,21 @@ def get_apl_document_products(products, query):
                     "width": "100vw",
                     "height": "100vh",
                     "direction": "column",
-                    "background": {
-                        "type": "LinearGradient",
-                        "colorRange": ["#f5f7fa", "#e8eaf0", "#dfe2e8"],
-                        "inputRange": [0, 0.5, 1],
-                        "angle": 135
-                    },
+                    "background": "#ffffff",
                     "items": [
                         {
                             "type": "Container",
                             "width": "100%",
-                            "paddingTop": 30,
-                            "paddingLeft": 40,
-                            "paddingRight": 40,
-                            "paddingBottom": 20,
+                            "height": 80,
+                            "background": "#667eea",
+                            "padding": 20,
                             "items": [
                                 {
                                     "type": "Text",
-                                    "text": f"🛍️ Shopping Results: {query}",
-                                    "fontSize": 26,
+                                    "text": f"🛍️ Shopping: {query}",
+                                    "fontSize": 28,
                                     "fontWeight": "bold",
-                                    "color": "#2d3748",
+                                    "color": "#ffffff",
                                     "textAlign": "center"
                                 }
                             ]
@@ -173,11 +167,10 @@ def get_apl_document_products(products, query):
                                 {
                                     "type": "Container",
                                     "width": "100%",
-                                    "background": "#ffffff",
-                                    "borderRadius": 20,
-                                    "padding": 25,
-                                    "marginBottom": 20,
-                                    "boxShadow": "0 8px 25px rgba(0,0,0,0.12)",
+                                    "background": "#f7fafc",
+                                    "borderRadius": 15,
+                                    "padding": 20,
+                                    "marginBottom": 15,
                                     "items": [
                                         {
                                             "type": "Container",
@@ -243,7 +236,12 @@ def get_apl_document_products(products, query):
                                                             "type": "Container",
                                                             "marginTop": 15,
                                                             "padding": 15,
-                                                            "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                                                            "background": {
+                                                                "type": "LinearGradient",
+                                                                "colorRange": ["#667eea", "#764ba2"],
+                                                                "inputRange": [0, 1],
+                                                                "angle": 135
+                                                            },
                                                             "borderRadius": 12,
                                                             "boxShadow": "0 4px 15px rgba(102,126,234,0.3)",
                                                             "items": [
@@ -284,12 +282,7 @@ def get_apl_document_cart(cart):
                     "width": "100vw",
                     "height": "100vh",
                     "direction": "column",
-                    "background": {
-                        "type": "LinearGradient",
-                        "colorRange": ["#f5f7fa", "#e8eaf0", "#dfe2e8"],
-                        "inputRange": [0, 0.5, 1],
-                        "angle": 135
-                    },
+                    "background": "#ffffff",
                     "items": [
                         {
                             "type": "Container",
@@ -433,12 +426,7 @@ def get_apl_document_confirmation(order):
                     "height": "100vh",
                     "alignItems": "center",
                     "justifyContent": "center",
-                    "background": {
-                        "type": "LinearGradient",
-                        "colorRange": ["#f5f7fa", "#e8eaf0", "#dfe2e8"],
-                        "inputRange": [0, 0.5, 1],
-                        "angle": 135
-                    },
+                    "background": "#ffffff",
                     "items": [
                         {
                             "type": "Container",
@@ -617,7 +605,7 @@ def lambda_handler(event, context):
                                     'directives': [
                                         {
                                             'type': 'Alexa.Presentation.APL.RenderDocument',
-                                            'token': 'shopping-products',
+                                            'token': 'shopping-products-bright-v2',
                                             'document': get_apl_document_products(products, product),
                                             'datasources': {
                                                 'payload': {
@@ -687,7 +675,7 @@ def lambda_handler(event, context):
                             'directives': [
                                 {
                                     'type': 'Alexa.Presentation.APL.RenderDocument',
-                                    'token': 'shopping-cart',
+                                    'token': 'shopping-cart-bright-v2',
                                     'document': get_apl_document_cart(cart),
                                     'datasources': {
                                         'payload': {
@@ -747,7 +735,7 @@ def lambda_handler(event, context):
                                     'directives': [
                                         {
                                             'type': 'Alexa.Presentation.APL.RenderDocument',
-                                            'token': 'order-confirmation',
+                                            'token': 'order-confirmation-bright-v2',
                                             'document': get_apl_document_confirmation(order),
                                             'datasources': {
                                                 'payload': {
