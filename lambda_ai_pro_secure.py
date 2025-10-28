@@ -122,8 +122,8 @@ def create_order(user_id, cart):
         return None
 
 def get_apl_document_products(products, query):
-    """Return APL document for product display with purchase options"""
-    # APL document for shopping products display
+    """Return APL document for product display with purchase options - PREMIUM BRIGHT DESIGN"""
+    # Premium APL with light modern design
     return {
         "type": "APL",
         "version": "2023.3",
@@ -135,10 +135,9 @@ def get_apl_document_products(products, query):
                     "width": "100vw",
                     "height": "100vh",
                     "direction": "column",
-                    "justifyContent": "spaceBetween",
                     "background": {
                         "type": "LinearGradient",
-                        "colorRange": ["#2a3f5f", "#1e3a5f", "#16304e"],
+                        "colorRange": ["#f5f7fa", "#e8eaf0", "#dfe2e8"],
                         "inputRange": [0, 0.5, 1],
                         "angle": 135
                     },
@@ -156,7 +155,7 @@ def get_apl_document_products(products, query):
                                     "text": f"🛍️ Shopping Results: {query}",
                                     "fontSize": 26,
                                     "fontWeight": "bold",
-                                    "color": "#00d4ff",
+                                    "color": "#2d3748",
                                     "textAlign": "center"
                                 }
                             ]
@@ -174,13 +173,11 @@ def get_apl_document_products(products, query):
                                 {
                                     "type": "Container",
                                     "width": "100%",
-                                    "background": "rgba(255, 255, 255, 0.15)",
+                                    "background": "#ffffff",
                                     "borderRadius": 20,
-                                    "borderWidth": 1,
-                                    "borderColor": "rgba(255, 255, 255, 0.3)",
                                     "padding": 25,
                                     "marginBottom": 20,
-                                    "boxShadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
+                                    "boxShadow": "0 8px 25px rgba(0,0,0,0.12)",
                                     "items": [
                                         {
                                             "type": "Container",
@@ -202,10 +199,10 @@ def get_apl_document_products(products, query):
                                                     "items": [
                                                         {
                                                             "type": "Text",
-                                                            "text": "${data.name}",
-                                                            "fontSize": 20,
-                                                            "fontWeight": "bold",
-                                                            "color": "#ffffff",
+                                                                "text": "${data.name}",
+                                                                "fontSize": 20,
+                                                                "fontWeight": "bold",
+                                                                "color": "#2d3748",
                                                             "maxLines": 2
                                                         },
                                                         {
@@ -215,10 +212,10 @@ def get_apl_document_products(products, query):
                                                             "items": [
                                                                 {
                                                                     "type": "Text",
-                                                                    "text": "$${data.price}",
-                                                                    "fontSize": 28,
-                                                                    "fontWeight": "bold",
-                                                                    "color": "#00ff88"
+                                                                "text": "$${data.price}",
+                                                                "fontSize": 28,
+                                                                "fontWeight": "bold",
+                                                                "color": "#48bb78"
                                                                 },
                                                                 {
                                                                     "type": "Container",
@@ -228,7 +225,7 @@ def get_apl_document_products(products, query):
                                                                             "type": "Text",
                                                                             "text": "⭐ ${data.rating}/5",
                                                                             "fontSize": 14,
-                                                                            "color": "#ffd700"
+                                                                            "color": "#f6ad55"
                                                                         }
                                                                     ]
                                                                 }
@@ -238,7 +235,7 @@ def get_apl_document_products(products, query):
                                                             "type": "Text",
                                                             "text": "${data.description}",
                                                             "fontSize": 14,
-                                                            "color": "#cbd5e0",
+                                                            "color": "#718096",
                                                             "maxLines": 2,
                                                             "marginTop": 10
                                                         },
@@ -246,19 +243,16 @@ def get_apl_document_products(products, query):
                                                             "type": "Container",
                                                             "marginTop": 15,
                                                             "padding": 15,
-                                                            "background": {
-                                                                "type": "LinearGradient",
-                                                                "colorRange": ["#00ff88", "#00cc66"],
-                                                                "angle": 45
-                                                            },
+                                                            "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                                                             "borderRadius": 12,
+                                                            "boxShadow": "0 4px 15px rgba(102,126,234,0.3)",
                                                             "items": [
                                                                 {
                                                                     "type": "Text",
                                                                     "text": "🛒 Say: Add item ${index+1}",
                                                                     "fontSize": 14,
                                                                     "fontWeight": "bold",
-                                                                    "color": "#0f0f23",
+                                                                    "color": "#ffffff",
                                                                     "textAlign": "center"
                                                                 }
                                                             ]

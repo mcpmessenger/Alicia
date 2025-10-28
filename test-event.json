@@ -1,0 +1,11 @@
+﻿{
+  "session": {
+    "user": {
+      "userId": "test-user-123"
+    },
+    "attributes": {}
+  },
+  "request": {
+    "type": "LaunchRequest"
+  }
+}

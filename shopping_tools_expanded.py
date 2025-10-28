@@ -434,3 +434,4 @@ def product_search_tool(query: str, max_price: Optional[float] = None, category:
         }
         return json.dumps(error_response)
 
+

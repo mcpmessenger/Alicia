@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pro Skill - Voice Shopping Assistant for Alexa</title>
+    <meta name="description" content="Shop smarter with AI Pro - Your voice-activated shopping assistant for Alexa. Find products, manage your cart, and complete purchases hands-free.">
+    <meta name="keywords" content="Alexa shopping, voice shopping, AI assistant, Alexa skill, hands-free shopping">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .tagline {
+            font-size: 24px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+        
+        .btn {
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+        
+        /* Features Section */
+        .features {
+            background: white;
+            padding: 80px 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 60px;
+            color: #2d3748;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: #f7fafc;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        
+        .feature-card p {
+            color: #718096;
+            font-size: 16px;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+        }
+        
+        .step {
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .step h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        /* Stats Section */
+        .stats {
+            background: #2d3748;
+            color: white;
+            padding: 60px 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: #48bb78;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 18px;
+            color: #cbd5e0;
+        }
+        
+        /* CTA Section */
+        .final-cta {
+            background: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .final-cta h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+        
+        .final-cta p {
+            font-size: 20px;
+            color: #718096;
+            margin-bottom: 40px;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a202c;
+            color: #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .tagline {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo">🛍️</div>
+            <h1>AI Pro Skill</h1>
+            <p class="tagline">Your Voice-Activated Shopping Assistant for Alexa</p>
+            <p style="font-size: 20px; margin-bottom: 40px;">Shop 80+ premium products with just your voice. Find products, manage your cart, and checkout—all hands-free!</p>
+            
+            <div class="cta-buttons">
+                <a href="#enable" class="btn btn-primary">Enable on Alexa</a>
+                <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
+            </div>
+            
+            <p style="margin-top: 30px; font-size: 18px; opacity: 0.9;">
+                Just say: <strong>"Alexa, open AI Pro"</strong>
+            </p>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why AI Pro Skill?</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>80+ Premium Products</h3>
+                    <p>Curated selection of best-sellers from Electronics, Home, Fashion, Beauty, and more</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛒</div>
+                    <h3>Complete Shopping Cart</h3>
+                    <p>Add items, view cart, and checkout with simple voice commands</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Secure Checkout</h3>
+                    <p>Voice-activated purchase flow with order confirmation and tracking</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Beautiful Displays</h3>
+                    <p>Stunning visuals on Echo Show with product images, ratings, and prices</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Real Amazon Products</h3>
+                    <p>Genuine products with real prices, ratings, and customer reviews</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Smart Recommendations</h3>
+                    <p>Intelligent product suggestions based on your preferences</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Say "Alexa, open AI Pro"</h3>
+                    <p>Launch your personal shopping assistant</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Search for Products</h3>
+                    <p>"Find me headphones" or "Show me coffee makers"</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Add to Cart</h3>
+                    <p>"Add item 1" to put products in your cart</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Checkout & Buy</h3>
+                    <p>"Checkout now" then confirm your purchase</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div>
+                    <div class="stat-number">80+</div>
+                    <div class="stat-label">Premium Products</div>
+                </div>
+                <div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div>
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Voice Control</div>
+                </div>
+                <div>
+                    <div class="stat-number">Free</div>
+                    <div class="stat-label">To Use</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Product Categories -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Shop by Category</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎧</div>
+                    <h3>Electronics</h3>
+                    <p>Headphones, Smart Speakers, Gaming Consoles, Tablets</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🏠</div>
+                    <h3>Home & Kitchen</h3>
+                    <p>Air Fryers, Blenders, Coffee Makers, Instant Pots</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧹</div>
+                    <h3>Vacuums</h3>
+                    <p>Dyson, Shark, Roomba, Cordless & Robot Vacuums</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💪</div>
+                    <h3>Fitness & Sports</h3>
+                    <p>Fitness Trackers, Yoga Mats, Dumbbells, Smartwatches</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💄</div>
+                    <h3>Beauty & Care</h3>
+                    <p>Skincare, Hair Tools, Electric Toothbrushes</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">👜</div>
+                    <h3>Fashion & Travel</h3>
+                    <p>Luggage, Backpacks, Sunglasses, Accessories</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Voice Commands -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">Voice Commands</h2>
+            
+            <div style="max-width: 700px; margin: 0 auto; text-align: left;">
+                <div style="background: rgba(255,255,255,0.15); padding: 30px; border-radius: 20px; margin-bottom: 20px;">
+                    <h3 style="font-size: 20px; margin-bottom: 15px;">🔍 Search Products</h3>
+                    <p>"Search for headphones"</p>
+                    <p>"Show me vacuum cleaners"</p>
+                    <p>"Find me the best coffee maker"</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.15); padding: 30px; border-radius: 20px; margin-bottom: 20px;">
+                    <h3 style="font-size: 20px; margin-bottom: 15px;">🛒 Manage Cart</h3>
+                    <p>"Add item 1"</p>
+                    <p>"View cart"</p>
+                    <p>"Remove item 2"</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.15); padding: 30px; border-radius: 20px;">
+                    <h3 style="font-size: 20px; margin-bottom: 15px;">💳 Checkout</h3>
+                    <p>"Checkout now"</p>
+                    <p>"Yes buy it"</p>
+                    <p>"Track my order"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA -->
+    <section class="final-cta" id="enable">
+        <div class="container">
+            <h2>Ready to Shop Smarter?</h2>
+            <p>Enable AI Pro Skill on your Alexa device today</p>
+            
+            <div class="cta-buttons">
+                <a href="https://www.amazon.com/dp/YOUR-SKILL-ID" class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    Enable Alexa Skill
+                </a>
+            </div>
+            
+            <p style="margin-top: 40px; color: #a0aec0; font-size: 16px;">
+                Works with Echo, Echo Show, Echo Dot, and Alexa app
+            </p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 AI Pro Skill. All rights reserved.</p>
+            <p style="margin-top: 10px;">
+                <a href="#privacy">Privacy Policy</a> | 
+                <a href="#terms">Terms of Service</a> | 
+                <a href="mailto:support@aipro-skill.com">Contact</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 14px; opacity: 0.7;">
+                Amazon Associate ID: aipro00-20 • This site contains affiliate links
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

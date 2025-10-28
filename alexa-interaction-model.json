@@ -9,6 +9,10 @@
             {
               "name": "Query",
               "type": "AMAZON.SearchQuery"
+            },
+            {
+              "name": "Price",
+              "type": "AMAZON.NUMBER"
             }
           ],
           "samples": [
@@ -33,7 +37,50 @@
             "Gemini {Query}",
             "Ask OpenAI what is {Query}",
             "Ask Claude about {Query}",
-            "Ask Gemini to explain {Query}"
+            "Ask Gemini to explain {Query}",
+            "Find me {Query}",
+            "Search for {Query}",
+            "Show me {Query}",
+            "I want to buy {Query}",
+            "I need to purchase {Query}",
+            "What's the best {Query}",
+            "Recommend {Query}",
+            "Find the best {Query}",
+            "Search for the best {Query}",
+            "Show me the best {Query}",
+            "What {Query} should I buy",
+            "Which {Query} is best",
+            "Find me a good {Query}",
+            "I'm looking for {Query}",
+            "Help me find {Query}",
+            "Can you find {Query}",
+            "Find {Query} under {Price}",
+            "Show me {Query} under {Price}",
+            "What's the best {Query} under {Price}",
+            "Find me {Query} for under {Price}",
+            "Search for {Query} under {Price}",
+            "I want {Query} under {Price}",
+            "Find me {Query} under {Price} dollars",
+            "Show me {Query} for less than {Price}",
+            "What {Query} can I get for under {Price}",
+            "Find me the best {Query} under {Price}",
+            "Search for {Query} under {Price} dollars",
+            "I need {Query} under {Price}",
+            "Find {Query} for under {Price} dollars",
+            "Show me {Query} under {Price} dollars",
+            "What's the best {Query} for under {Price}",
+            "Find me {Query} under {Price} bucks",
+            "Search for {Query} under {Price} bucks",
+            "I want {Query} under {Price} bucks",
+            "Find me {Query} under {Price} bucks",
+            "Show me {Query} under {Price} bucks",
+            "What {Query} can I get for under {Price} bucks",
+            "Find me the best {Query} under {Price} bucks",
+            "Search for {Query} under {Price} bucks",
+            "I need {Query} under {Price} bucks",
+            "Find {Query} for under {Price} bucks",
+            "Show me {Query} under {Price} bucks",
+            "What's the best {Query} for under {Price} bucks"
           ]
         },
         {
@@ -50,6 +97,101 @@
             "Use {Provider} by default",
             "Set default to {Provider}",
             "Change default to {Provider}"
+          ]
+        },
+        {
+          "name": "ShoppingIntent",
+          "slots": [
+            {
+              "name": "Product",
+              "type": "AMAZON.SearchQuery"
+            },
+            {
+              "name": "Price",
+              "type": "AMAZON.NUMBER"
+            },
+            {
+              "name": "Category",
+              "type": "ProductCategory"
+            }
+          ],
+          "samples": [
+            "Find me {Product}",
+            "Search for {Product}",
+            "Show me {Product}",
+            "I want to buy {Product}",
+            "I need to purchase {Product}",
+            "What's the best {Product}",
+            "Recommend {Product}",
+            "Find the best {Product}",
+            "Search for the best {Product}",
+            "Show me the best {Product}",
+            "What {Product} should I buy",
+            "Which {Product} is best",
+            "Find me a good {Product}",
+            "I'm looking for {Product}",
+            "Help me find {Product}",
+            "Can you find {Product}",
+            "Find {Product} under {Price}",
+            "Show me {Product} under {Price}",
+            "What's the best {Product} under {Price}",
+            "Find me {Product} for under {Price}",
+            "Search for {Product} under {Price}",
+            "I want {Product} under {Price}",
+            "Find me {Product} under {Price} dollars",
+            "Show me {Product} for less than {Price}",
+            "What {Product} can I get for under {Price}",
+            "Find me the best {Product} under {Price}",
+            "Search for {Product} under {Price} dollars",
+            "I need {Product} under {Price}",
+            "Find {Product} for under {Price} dollars",
+            "Show me {Product} under {Price} dollars",
+            "What's the best {Product} for under {Price}",
+            "Find me {Product} under {Price} bucks",
+            "Search for {Product} under {Price} bucks",
+            "I want {Product} under {Price} bucks",
+            "Find me {Product} under {Price} bucks",
+            "Show me {Product} under {Price} bucks",
+            "What {Product} can I get for under {Price} bucks",
+            "Find me the best {Product} under {Price} bucks",
+            "Search for {Product} under {Price} bucks",
+            "I need {Product} under {Price} bucks",
+            "Find {Product} for under {Price} bucks",
+            "Show me {Product} under {Price} bucks",
+            "What's the best {Product} for under {Price} bucks",
+            "Find me {Category} {Product}",
+            "Search for {Category} {Product}",
+            "Show me {Category} {Product}",
+            "I want to buy {Category} {Product}",
+            "What's the best {Category} {Product}",
+            "Find the best {Category} {Product}",
+            "Find me {Category} {Product} under {Price}",
+            "Show me {Category} {Product} under {Price}",
+            "What's the best {Category} {Product} under {Price}",
+            "Find me {Category} {Product} for under {Price}",
+            "Search for {Category} {Product} under {Price}",
+            "I want {Category} {Product} under {Price}",
+            "Find me {Category} {Product} under {Price} dollars",
+            "Show me {Category} {Product} for less than {Price}",
+            "What {Category} {Product} can I get for under {Price}",
+            "Find me the best {Category} {Product} under {Price}",
+            "Search for {Category} {Product} under {Price} dollars",
+            "I need {Category} {Product} under {Price}",
+            "Find {Category} {Product} for under {Price} dollars",
+            "Show me {Category} {Product} under {Price} dollars",
+            "What's the best {Category} {Product} for under {Price}",
+            "Find me {Category} {Product} under {Price} bucks",
+            "Search for {Category} {Product} under {Price} bucks",
+            "I want {Category} {Product} under {Price} bucks",
+            "Find me {Category} {Product} under {Price} bucks",
+            "Show me {Category} {Product} under {Price} bucks",
+            "What {Category} {Product} can I get for under {Price} bucks",
+            "Find me the best {Category} {Product} under {Price} bucks",
+            "Search for {Category} {Product} under {Price} bucks",
+            "I need {Category} {Product} under {Price} bucks",
+            "Find {Category} {Product} for under {Price} bucks",
+            "Show me {Category} {Product} under {Price} bucks",
+            "What's the best {Category} {Product} for under {Price} bucks"
           ]
         },
         {
@@ -107,6 +249,86 @@
             {
               "name": {
                 "value": "gemini"
+              }
+            }
+          ]
+        },
+        {
+          "name": "ProductCategory",
+          "values": [
+            {
+              "name": {
+                "value": "electronics"
+              }
+            },
+            {
+              "name": {
+                "value": "home"
+              }
+            },
+            {
+              "name": {
+                "value": "clothing"
+              }
+            },
+            {
+              "name": {
+                "value": "books"
+              }
+            },
+            {
+              "name": {
+                "value": "toys"
+              }
+            },
+            {
+              "name": {
+                "value": "sports"
+              }
+            },
+            {
+              "name": {
+                "value": "beauty"
+              }
+            },
+            {
+              "name": {
+                "value": "health"
+              }
+            },
+            {
+              "name": {
+                "value": "automotive"
+              }
+            },
+            {
+              "name": {
+                "value": "garden"
+              }
+            },
+            {
+              "name": {
+                "value": "office"
+              }
+            },
+            {
+              "name": {
+                "value": "kitchen"
+              }
+            },
+            {
+              "name": {
+                "value": "furniture"
+              }
+            },
+            {
+              "name": {
+                "value": "jewelry"
+              }
+            },
+            {
+              "name": {
+                "value": "shoes"
               }
             }
           ]
