@@ -750,21 +750,64 @@
     <script>
         let products = [];
 
-        // Load products
-        fetch('products-simple.json')
-            .then(res => res.json())
-            .then(data => {
-                products = data;
+        // Load products from JSON
+        async function loadAllProducts() {
+            try {
+                const response = await fetch('products-simple.json');
+                if (!response.ok) throw new Error('Failed to load products');
+                
+                products = await response.json();
+                console.log(`✅ Loaded ${products.length} products from JSON`);
+                
+                // Update product count in header
+                document.querySelectorAll('.stat-number')[0].textContent = products.length;
+                
                 showSection('all');
-            })
-            .catch(() => {
-                // Fallback products
-                products = [
-                    {name: "Sony WH-1000XM5", price: 398, image_url: "https://m.media-amazon.com/images/I/61+btxzpfDL._AC_SL1500_.jpg", rating: 4.5, reviews: 8543, description: "Premium noise canceling", category: "electronics", badge: "Best Seller", url: "https://www.amazon.com/dp/B09XS7JWHH?tag=aipro00-20"},
-                    {name: "Apple AirPods Pro", price: 249, image_url: "https://m.media-amazon.com/images/I/61SUj2aKoEL._AC_SL1500_.jpg", rating: 4.6, reviews: 45782, description: "Spatial audio", category: "electronics", badge: "Amazon's Choice", url: "https://www.amazon.com/dp/B0CHWRXH8B?tag=aipro00-20"},
-                ];
+            } catch (error) {
+                console.error('Error loading products:', error);
+                alert('⚠️ Products JSON file not found!\n\nMake sure products-simple.json is in the same directory as this HTML file.\n\nUsing fallback products for now...');
+                
+                // Use fallback - still functional but limited
+                products = getFallbackProducts();
                 showSection('all');
-            });
+            }
+        }
+        
+        function getFallbackProducts() {
+            // Comprehensive fallback with key products from each category
+            return [
+                // Electronics
+                {name: "Sony WH-1000XM5 Wireless Premium Noise Canceling Headphones", price: 398.0, image_url: "https://m.media-amazon.com/images/I/61+btxzpfDL._AC_SL1500_.jpg", rating: 4.5, reviews: 8543, description: "Industry-leading noise canceling, 30-hour battery, premium sound quality", category: "electronics", subcategory: "headphones", badge: "Best Seller", url: "https://www.amazon.com/dp/B09XS7JWHH?tag=aipro00-20"},
+                {name: "Apple AirPods Pro (2nd Generation) with MagSafe Case", price: 249.0, image_url: "https://m.media-amazon.com/images/I/61SUj2aKoEL._AC_SL1500_.jpg", rating: 4.6, reviews: 45782, description: "Active Noise Cancellation, Spatial Audio, MagSafe charging", category: "electronics", subcategory: "headphones", badge: "Amazon's Choice", url: "https://www.amazon.com/dp/B0CHWRXH8B?tag=aipro00-20"},
+                {name: "Amazon Echo Dot (5th Gen) Smart Speaker with Alexa", price: 49.99, image_url: "https://m.media-amazon.com/images/I/714Rq4k05UL._AC_SL1000_.jpg", rating: 4.6, reviews: 234567, description: "Voice control smart home, crisp audio, Alexa built-in", category: "electronics", subcategory: "smart_home", badge: "Best Seller", url: "https://www.amazon.com/dp/B09B8V1LZ3?tag=aipro00-20"},
+                {name: "Nintendo Switch OLED Model with White Joy-Con", price: 349.99, image_url: "https://m.media-amazon.com/images/I/61-PblYntsL._AC_SL1500_.jpg", rating: 4.8, reviews: 67890, description: "7-inch OLED screen, enhanced audio, 64GB internal storage", category: "electronics", subcategory: "gaming", badge: "Best Seller", url: "https://www.amazon.com/dp/B098RKWHHZ?tag=aipro00-20"},
+                
+                // Home
+                {name: "Ninja Professional Plus BL660 Blender with Auto-iQ", price: 89.99, image_url: "https://m.media-amazon.com/images/I/715hdjzAqvL._AC_SL1500_.jpg", rating: 4.7, reviews: 42921, description: "1000W motor, 72oz pitcher, perfect for smoothies and frozen drinks", category: "home", subcategory: "blenders", badge: "Best Seller", url: "https://www.amazon.com/dp/B071FCKRFG?tag=aipro00-20"},
+                {name: "Instant Pot Duo 7-in-1 Electric Pressure Cooker 6 Quart", price: 99.95, image_url: "https://m.media-amazon.com/images/I/81ckZ+CJF0L._AC_SL1500_.jpg", rating: 4.7, reviews: 98765, description: "Pressure cooker, slow cooker, rice cooker, steamer, sauté pan", category: "home", subcategory: "kitchen_appliances", badge: "Best Seller", url: "https://www.amazon.com/dp/B01NBKTPTS?tag=aipro00-20"},
+                {name: "Dyson V15 Detect Cordless Vacuum with Laser Detection", price: 649.99, image_url: "https://m.media-amazon.com/images/I/41VhMfXs2ML._AC_SL1500_.jpg", rating: 4.4, reviews: 34567, description: "Laser reveals invisible dust, powerful suction, LCD screen", category: "home", subcategory: "vacuums", badge: "Premium Pick", url: "https://www.amazon.com/dp/B09X5VJ8KM?tag=aipro00-20"},
+                
+                // Beauty
+                {name: "Olaplex No.3 Hair Perfector Repairing Treatment", price: 30.00, image_url: "https://m.media-amazon.com/images/I/7159HdluZvL._AC_SL1500_.jpg", rating: 4.5, reviews: 34567, description: "Bond-building treatment for damaged hair, salon-quality results", category: "beauty", subcategory: "haircare", badge: "Best Seller", url: "https://www.amazon.com/dp/B00TSSNS30?tag=aipro00-20"},
+                {name: "Dyson Airwrap Multi-Styler Complete Long", price: 599.99, image_url: "https://m.media-amazon.com/images/I/61nLWXXk+gL._AC_SL1500_.jpg", rating: 4.4, reviews: 5432, description: "Styles without extreme heat, multiple attachments, salon-quality", category: "beauty", subcategory: "hair_tools", badge: "Luxury Choice", url: "https://www.amazon.com/dp/B0BHYT38B9?tag=aipro00-20"},
+                
+                // Sports
+                {name: "Fitbit Charge 6 Fitness Tracker with Heart Rate and GPS", price: 149.95, image_url: "https://m.media-amazon.com/images/I/618Bv5LxbUL._AC_SL1500_.jpg", rating: 4.3, reviews: 12345, description: "Built-in GPS, 40+ exercise modes, 7-day battery, Google apps", category: "sports", subcategory: "fitness_trackers", badge: "Best Seller", url: "https://www.amazon.com/dp/B0CGJ5P5HN?tag=aipro00-20"},
+                {name: "Apple Watch Series 9 GPS 45mm Smartwatch", price: 429.00, image_url: "https://m.media-amazon.com/images/I/71fVoVHhaaL._AC_SL1500_.jpg", rating: 4.7, reviews: 45678, description: "Always-On Retina display, fitness tracking, heart health, ECG", category: "sports", subcategory: "fitness_trackers", badge: "Premium Pick", url: "https://www.amazon.com/dp/B0CHX3SZDL?tag=aipro00-20"},
+                
+                // Fashion
+                {name: "Samsonite Winfield 3 DLX Hardside Luggage 28 Inch Navy", price: 299.99, image_url: "https://m.media-amazon.com/images/I/71v-gDxN74L._AC_SL1500_.jpg", rating: 4.6, reviews: 12345, description: "Hardside spinner, TSA lock, 360-degree wheels, 10-year warranty", category: "fashion", subcategory: "luggage", badge: "Best Seller", url: "https://www.amazon.com/dp/B08JC7TZWF?tag=aipro00-20"},
+                
+                // Books
+                {name: "Atomic Habits: An Easy & Proven Way to Build Good Habits", price: 16.00, image_url: "https://m.media-amazon.com/images/I/81F90H7hnML._AC_SL1500_.jpg", rating: 4.8, reviews: 123456, description: "#1 New York Times bestseller, transform your life with tiny changes", category: "books", subcategory: "self_help", badge: "Best Seller", url: "https://www.amazon.com/dp/B07D23CFGR?tag=aipro00-20"},
+                
+                // Garden
+                {name: "Sun Joe SPX3000 Pressure Washer 2030 PSI Electric", price: 169.00, image_url: "https://m.media-amazon.com/images/I/81OOlmA9T1L._AC_SL1500_.jpg", rating: 4.4, reviews: 34567, description: "2030 PSI max, dual detergent tanks, 5 quick-connect nozzles", category: "garden", subcategory: "tools", badge: "Amazon's Choice", url: "https://www.amazon.com/dp/B00CPGMUXW?tag=aipro00-20"}
+            ];
+        }
+        
+        // Initialize on page load
+        loadAllProducts();
 
         function showSection(section) {
             // Update nav
@@ -783,6 +826,8 @@
         }
 
         function renderAllByCategory() {
+            console.log(`📊 Rendering ${products.length} products by category`);
+            
             // Group by category
             const categories = {
                 'electronics': [],
@@ -800,25 +845,32 @@
             products.forEach(p => {
                 if (categories[p.category]) {
                     categories[p.category].push(p);
+                } else {
+                    console.warn(`Unknown category: ${p.category} for ${p.name}`);
                 }
             });
 
             let html = '';
+            let totalRendered = 0;
+            
             const categoryNames = {
-                'electronics': 'Electronics',
-                'home': 'Home & Kitchen',
-                'beauty': 'Beauty & Personal Care',
-                'sports': 'Fitness & Sports',
-                'fashion': 'Fashion & Luggage',
-                'books': 'Books & Media',
-                'toys': 'Toys & Gaming',
-                'office': 'Office & Tech',
-                'automotive': 'Automotive',
-                'garden': 'Garden & Outdoor'
+                'electronics': '💻 Electronics',
+                'home': '🏠 Home & Kitchen',
+                'beauty': '💄 Beauty & Personal Care',
+                'sports': '💪 Fitness & Sports',
+                'fashion': '👔 Fashion & Luggage',
+                'books': '📚 Books & Media',
+                'toys': '🎮 Toys & Gaming',
+                'office': '📱 Office & Tech',
+                'automotive': '🚗 Automotive',
+                'garden': '🌿 Garden & Outdoor'
             };
 
             for (let cat in categories) {
                 if (categories[cat].length > 0) {
+                    console.log(`  ${categoryNames[cat]}: ${categories[cat].length} products`);
+                    totalRendered += categories[cat].length;
+                    
                     html += `
                         <div class="section">
                             <div class="section-header">
@@ -833,6 +885,7 @@
                 }
             }
 
+            console.log(`✅ Total rendered: ${totalRendered} products`);
             document.getElementById('main-content').innerHTML = html;
             addTiltEffects();
         }
