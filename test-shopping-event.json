@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "session": {
+    "new": true,
+    "sessionId": "test-session-123",
+    "application": {
+      "applicationId": "amzn1.ask.skill.test"
+    },
+    "user": {
+      "userId": "test-user-123"
+    }
+  },
+  "context": {
+    "System": {
+      "device": {
+        "deviceId": "test-device-123",
+        "supportedInterfaces": {
+          "Display": {}
+        }
+      }
+    }
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "test-request-123",
+    "intent": {
+      "name": "ShoppingIntent",
+      "slots": {
+        "Query": {
+          "name": "Query",
+          "value": "headphones"
+        }
+      }
+    }
+  }
+}
+
+

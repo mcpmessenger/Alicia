@@ -124,7 +124,6 @@ def create_order(user_id, cart):
 def get_apl_document_products(products, query):
     """Return SIMPLE BRIGHT APL that WORKS - No fancy gradients"""
     # Simple bright design - pure white background, works 100%
-    logger.info(f"GENERATING APL with background: white")
     return {
         "type": "APL",
         "version": "2023.3",
@@ -136,7 +135,9 @@ def get_apl_document_products(products, query):
                     "width": "100vw",
                     "height": "100vh",
                     "direction": "column",
-                    "background": "white",
+                    "background": {
+                        "color": "#FFFFFF"
+                    },
                     "items": [
                         {
                             "type": "Container",
@@ -283,7 +284,9 @@ def get_apl_document_cart(cart):
                     "width": "100vw",
                     "height": "100vh",
                     "direction": "column",
-                    "background": "white",
+                    "background": {
+                        "color": "#FFFFFF"
+                    },
                     "items": [
                         {
                             "type": "Container",
@@ -427,7 +430,9 @@ def get_apl_document_confirmation(order):
                     "height": "100vh",
                     "alignItems": "center",
                     "justifyContent": "center",
-                    "background": "white",
+                    "background": {
+                        "color": "#FFFFFF"
+                    },
                     "items": [
                         {
                             "type": "Container",
@@ -607,7 +612,7 @@ def lambda_handler(event, context):
                                         {
                                             'type': 'Alexa.Presentation.APL.RenderDocument',
                                             'token': 'shopping-products-bright-v2',
-                                            'document': (lambda doc: (logger.info(f"Sending APL with bg: {doc['mainTemplate']['items'][0].get('background')}"), doc)[1])(get_apl_document_products(products, product)),
+                                            'document': get_apl_document_products(products, product),
                                             'datasources': {
                                                 'payload': {
                                                     'products': products,

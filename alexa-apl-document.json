@@ -13,10 +13,7 @@
         "direction": "column",
         "justifyContent": "spaceBetween",
         "background": {
-          "type": "LinearGradient",
-          "colorRange": ["#0f0f23", "#1a1a2e", "#16213e"],
-          "inputRange": [0, 0.5, 1],
-          "angle": 135
+          "color": "#FFFFFF"
         },
         "items": [
           {
@@ -97,18 +94,18 @@
               {
                 "type": "Container",
                 "width": "100%",
-                "background": "rgba(255, 255, 255, 0.05)",
+                "background": "#f7fafc",
                 "borderRadius": 20,
                 "borderWidth": 1,
-                "borderColor": "rgba(255, 255, 255, 0.1)",
+                "borderColor": "#e2e8f0",
                 "padding": 30,
-                "boxShadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
+                "boxShadow": "0 8px 32px rgba(0, 0, 0, 0.1)",
                 "items": [
                   {
                     "type": "Text",
                     "text": "${payload.responseText}",
                     "fontSize": 18,
-                    "color": "#ffffff",
+                    "color": "#2d3748",
                     "textAlign": "left",
                     "lineHeight": 1.6,
                     "width": "100%"
