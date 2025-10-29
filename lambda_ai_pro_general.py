@@ -28,11 +28,11 @@ GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY', '')
 
 # Welcome messages (randomized for friendliness)
 WELCOME_MESSAGES = [
-    "Hi! I'm AI Pro, your friendly assistant. I can chat about anything, help you shop on Amazon, or manage your cart. What's on your mind?",
-    "Hey there! I'm here to help with anything - from answering questions to finding great products. What can I do for you?",
-    "Welcome to AI Pro! Think of me as your helpful friend who happens to be great at shopping. Want to chat, browse products, or check your cart?",
-    "Hi! Ready to have a conversation, find some awesome products, or see what's in your cart? I'm here for you!",
-    "Hey! I'm AI Pro - part conversational buddy, part shopping assistant. What would you like to explore today?"
+    "Hi! I'm AI Pro. Ask me anything or tell me what you're looking for!",
+    "Hey there! What's on your mind today?",
+    "Hello! I'm here to help. What would you like to know or find?",
+    "Hi! How can I help you today?",
+    "Hey! What can I do for you?"
 ]
 
 # Shopping keywords for intent detection
@@ -484,9 +484,9 @@ def lambda_handler(event, context):
                                     }
                                 }
                             else:
-                                response_text = f"Hmm, I couldn't find any products for '{product}'. Want to try a different search, or shall we chat about something else?"
+                                response_text = f"I couldn't find any products for '{product}'. Try a different search term!"
                         else:
-                            response_text = "I'm having trouble searching right now. Want to chat instead?"
+                            response_text = "I'm having trouble searching right now. Try again in a moment!"
                     except Exception as e:
                         logger.error(f"Shopping search error: {str(e)}")
                         response_text = "Oops, something went wrong with the search. Let's chat instead - what's on your mind?"
@@ -496,7 +496,7 @@ def lambda_handler(event, context):
                     if cart['items']:
                         response_text = f"You have {len(cart['items'])} items in your cart totaling ${cart['total']:.2f}. Say 'checkout' when you're ready!"
                     else:
-                        response_text = "Your cart is empty right now. Want to browse some products?"
+                        response_text = "Your cart is empty. Search for something to add!"
                 
                 else:  # General chat
                     response_text = call_openai(query, user_id)
@@ -551,9 +551,9 @@ def lambda_handler(event, context):
                                 }
                             }
                         else:
-                            response_text = f"I couldn't find '{product}'. Want to try a different search or chat about something?"
+                            response_text = f"I couldn't find '{product}'. Try a different search!"
                     else:
-                        response_text = "Having trouble searching. Want to chat instead?"
+                        response_text = "Having trouble searching. Try again!"
                 except Exception as e:
                     logger.error(f"Shopping error: {str(e)}")
                     response_text = "Oops! Error searching. Let's chat - what's up?"
@@ -573,9 +573,9 @@ def lambda_handler(event, context):
                             cart, added = add_to_cart(user_id, product)
                             
                             if added:
-                                response_text = f"Added {product['name']} to your cart! You now have {len(cart['items'])} items. Want to keep shopping or checkout?"
+                                response_text = f"Added {product['name']} to your cart! You now have {len(cart['items'])} items."
                             else:
-                                response_text = "That's already in your cart! Want to view your cart?"
+                                response_text = "That's already in your cart!"
                         else:
                             response_text = f"I don't see item {item_number}. Can you try again?"
                     except Exception as e:
@@ -591,11 +591,11 @@ def lambda_handler(event, context):
                 if cart['items']:
                     response_text = f"You have {len(cart['items'])} items totaling ${cart['total']:.2f}. Say 'checkout' when ready!"
                 else:
-                    response_text = "Your cart is empty. Want to browse some products?"
+                    response_text = "Your cart is empty. Try searching for products!"
             
             # ========== HELP ==========
             elif intent_name == 'AMAZON.HelpIntent':
-                response_text = "I'm AI Pro! I can chat about anything, help you shop on Amazon, or manage your cart. Try asking me a question, or say 'find me headphones' to start shopping!"
+                response_text = "Just ask me anything! I can answer questions, find products, or help with your cart. What would you like?"
             
             # ========== STOP/CANCEL ==========
             elif intent_name in ['AMAZON.StopIntent', 'AMAZON.CancelIntent']:
@@ -614,10 +614,10 @@ def lambda_handler(event, context):
                 }
             
             else:
-                response_text = "I'm not sure what you mean. Want to chat, shop, or check your cart?"
+                response_text = "I'm not sure I understand. Can you rephrase that, or just ask me something?"
         
         else:
-            response_text = "I didn't catch that. What would you like to do?"
+            response_text = "I didn't quite catch that. What did you say?"
         
         # Default response
         return {
@@ -639,7 +639,7 @@ def lambda_handler(event, context):
             'response': {
                 'outputSpeech': {
                     'type': 'PlainText',
-                    'text': 'Sorry, something went wrong. Want to try again?'
+                    'text': 'Sorry, something went wrong. Try again!'
                 },
                 'shouldEndSession': False
             }
