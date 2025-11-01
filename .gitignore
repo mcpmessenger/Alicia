@@ -1,54 +1,80 @@
-# AWS Credentials
-ai-assistant-credentials.txt
-*.credentials
-*.pem
-*.key
-
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
-.installed.cfg
-*.egg
+dist/
+build/
 
-# Virtual environments
+# Virtual Environment
 venv/
 env/
 ENV/
+
+# AWS Lambda Deployment Packages
+lambda-*.zip
+deployed-lambda.zip
+lambda-final.zip
+lambda-general-ai.zip
+lambda-with-products-fixed.zip
+*.zip
+
+# Temporary Deployment Directories
+lambda-*/
+lambda-friendly-chat-temp/
+
+# Environment Variables & Secrets
+.env
+.env.local
+*.pem
+*.key
+
+# API Keys (CRITICAL - NEVER COMMIT THESE!)
+*api-keys*
+*API_KEYS*
+*secrets*
+*credentials*
+
+# AWS Configuration
+.aws/
+aws-credentials.json
+
+# Logs
+*.log
+logs/
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# OS
-.DS_Store
-Thumbs.db
-
-# AWS
-.aws/
-*.zip
-lambda_function.zip
-python-layer.zip
-response.json
+# Test Files with Sensitive Data
 test-payload.json
+test-event.json
+test-launch.json
+test-shopping-event.json
+test-products-load.json
 
-# Temporary files
-*.tmp
-*.temp
+# Response Files (may contain tokens)
+response-*.json
+
+# Images/Screenshots (may show sensitive info)
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Documentation with API Keys (user requested)
+*API_SETUP*
+*api_setup*
+*KEYS*
+*keys_guide*

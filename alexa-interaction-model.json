@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "ai pro",
+      "invocationName": "tubby ai",
       "intents": [
         {
           "name": "LLMQueryIntent",
