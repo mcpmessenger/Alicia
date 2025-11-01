@@ -164,105 +164,101 @@ def get_apl_document_products(products, query):
                             "scrollDirection": "vertical",
                             "data": "${payload.products}",
                             "numbered": True,
-                            "items": [
-                                {
-                                    "type": "Container",
-                                    "width": "100%",
-                                    "background": "#f7fafc",
-                                    "borderRadius": 15,
-                                    "padding": 20,
-                                    "marginBottom": 15,
-                                    "items": [
-                                        {
-                                            "type": "Container",
-                                            "direction": "row",
-                                            "items": [
-                                                {
-                                                    "type": "Image",
-                                                    "source": "${data.image_url}",
-                                                    "width": 150,
-                                                    "height": 150,
-                                                    "scale": "best-fit",
-                                                    "borderRadius": 15,
-                                                    "boxShadow": "0 4px 16px rgba(0, 0, 0, 0.3)"
-                                                },
-                                                {
-                                                    "type": "Container",
-                                                    "paddingLeft": 25,
-                                                    "grow": 1,
-                                                    "items": [
-                                                        {
-                                                            "type": "Text",
-                                                                "text": "${data.name}",
-                                                                "fontSize": 20,
-                                                                "fontWeight": "bold",
-                                                                "color": "#2d3748",
-                                                            "maxLines": 2
-                                                        },
-                                                        {
-                                                            "type": "Container",
-                                                            "direction": "row",
-                                                            "marginTop": 10,
-                                                            "items": [
-                                                                {
-                                                                    "type": "Text",
-                                                                "text": "$${data.price}",
-                                                                "fontSize": 28,
-                                                                "fontWeight": "bold",
-                                                                "color": "#48bb78"
-                                                                },
-                                                                {
-                                                                    "type": "Container",
-                                                                    "paddingLeft": 20,
-                                                                    "items": [
-                                                                        {
-                                                                            "type": "Text",
-                                                                            "text": "⭐ ${data.rating}/5",
-                                                                            "fontSize": 14,
-                                                                            "color": "#f6ad55"
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "type": "Text",
-                                                            "text": "${data.description}",
-                                                            "fontSize": 14,
-                                                            "color": "#718096",
-                                                            "maxLines": 2,
-                                                            "marginTop": 10
-                                                        },
-                                                        {
-                                                            "type": "Container",
-                                                            "marginTop": 15,
-                                                            "padding": 15,
-                                                            "background": {
-                                                                "type": "LinearGradient",
-                                                                "colorRange": ["#667eea", "#764ba2"],
-                                                                "inputRange": [0, 1],
-                                                                "angle": 135
+                            "item": {
+                                "type": "Container",
+                                "width": "100%",
+                                "background": "#f7fafc",
+                                "borderRadius": 15,
+                                "padding": 20,
+                                "marginBottom": 15,
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Image",
+                                                "source": "${data.image_url}",
+                                                "width": 150,
+                                                "height": 150,
+                                                "scale": "best-fit",
+                                                "borderRadius": 15
+                                            },
+                                            {
+                                                "type": "Container",
+                                                "paddingLeft": 25,
+                                                "grow": 1,
+                                                "items": [
+                                                    {
+                                                        "type": "Text",
+                                                            "text": "${data.name}",
+                                                            "fontSize": 20,
+                                                            "fontWeight": "bold",
+                                                            "color": "#2d3748",
+                                                        "maxLines": 2
+                                                    },
+                                                    {
+                                                        "type": "Container",
+                                                        "direction": "row",
+                                                        "marginTop": 10,
+                                                        "items": [
+                                                            {
+                                                                "type": "Text",
+                                                            "text": "$${data.price}",
+                                                            "fontSize": 28,
+                                                            "fontWeight": "bold",
+                                                            "color": "#48bb78"
                                                             },
-                                                            "borderRadius": 12,
-                                                            "boxShadow": "0 4px 15px rgba(102,126,234,0.3)",
-                                                            "items": [
-                                                                {
-                                                                    "type": "Text",
-                                                                    "text": "🛒 Say: Add item ${index+1}",
-                                                                    "fontSize": 14,
-                                                                    "fontWeight": "bold",
-                                                                    "color": "#2d3748",
-                                                                    "textAlign": "center"
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
+                                                            {
+                                                                "type": "Container",
+                                                                "paddingLeft": 20,
+                                                                "items": [
+                                                                    {
+                                                                        "type": "Text",
+                                                                        "text": "⭐ ${data.rating}/5",
+                                                                        "fontSize": 14,
+                                                                        "color": "#f6ad55"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "Text",
+                                                        "text": "${data.description}",
+                                                        "fontSize": 14,
+                                                        "color": "#718096",
+                                                        "maxLines": 2,
+                                                        "marginTop": 10
+                                                    },
+                                                    {
+                                                        "type": "Container",
+                                                        "marginTop": 15,
+                                                        "padding": 15,
+                                                        "background": {
+                                                            "type": "LinearGradient",
+                                                            "colorRange": ["#667eea", "#764ba2"],
+                                                            "inputRange": [0, 1],
+                                                            "angle": 135
+                                                        },
+                                                        "borderRadius": 12,
+                                                        "items": [
+                                                            {
+                                                                "type": "Text",
+                                                                "text": "🛒 Say: Add item ${index+1}",
+                                                                "fontSize": 14,
+                                                                "fontWeight": "bold",
+                                                                "color": "#ffffff",
+                                                                "textAlign": "center"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -301,56 +297,54 @@ def get_apl_document_cart(cart):
                                     "type": "Sequence",
                                     "height": "50vh",
                                     "data": "${payload.cartItems}",
-                                    "items": [
-                                        {
-                                            "type": "Container",
-                                            "width": "100%",
-                                            "background": "#ffffff",
-                                            "borderRadius": 15,
-                                            "borderWidth": 2,
-                                            "borderColor": "#48bb78",
-                                            "padding": 20,
-                                            "marginBottom": 15,
-                                            "items": [
-                                                {
-                                                    "type": "Container",
-                                                    "direction": "row",
-                                                    "items": [
-                                                        {
-                                                            "type": "Image",
-                                                            "source": "${data.image_url}",
-                                                            "width": 80,
-                                                            "height": 80,
-                                                            "scale": "best-fit",
-                                                            "borderRadius": 10
-                                                        },
-                                                        {
-                                                            "type": "Container",
-                                                            "paddingLeft": 20,
-                                                            "grow": 1,
-                                                            "items": [
-                                                                {
-                                                                    "type": "Text",
-                                                                    "text": "${data.name}",
-                                                                    "fontSize": 18,
-                                                                    "fontWeight": "bold",
-                                                                    "color": "#ffffff"
-                                                                },
-                                                                {
-                                                                    "type": "Text",
-                                                                    "text": "$${data.price}",
-                                                                    "fontSize": 22,
-                                                                    "fontWeight": "bold",
-                                                                    "color": "#48bb78",
-                                                                    "marginTop": 5
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
+                                    "item": {
+                                        "type": "Container",
+                                        "width": "100%",
+                                        "background": "#ffffff",
+                                        "borderRadius": 15,
+                                        "borderWidth": 2,
+                                        "borderColor": "#48bb78",
+                                        "padding": 20,
+                                        "marginBottom": 15,
+                                        "items": [
+                                            {
+                                                "type": "Container",
+                                                "direction": "row",
+                                                "items": [
+                                                    {
+                                                        "type": "Image",
+                                                        "source": "${data.image_url}",
+                                                        "width": 80,
+                                                        "height": 80,
+                                                        "scale": "best-fit",
+                                                        "borderRadius": 10
+                                                    },
+                                                    {
+                                                        "type": "Container",
+                                                        "paddingLeft": 20,
+                                                        "grow": 1,
+                                                        "items": [
+                                                            {
+                                                                "type": "Text",
+                                                                "text": "${data.name}",
+                                                                "fontSize": 18,
+                                                                "fontWeight": "bold",
+                                                                "color": "#2d3748"
+                                                            },
+                                                            {
+                                                                "type": "Text",
+                                                                "text": "$${data.price}",
+                                                                "fontSize": 22,
+                                                                "fontWeight": "bold",
+                                                                "color": "#48bb78",
+                                                                "marginTop": 5
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
                                 },
                                 {
                                     "type": "Container",
@@ -371,7 +365,7 @@ def get_apl_document_cart(cart):
                                                     "text": "Total:",
                                                     "fontSize": 26,
                                                     "fontWeight": "bold",
-                                                    "color": "#ffffff"
+                                                    "color": "#2d3748"
                                                 },
                                                 {
                                                     "type": "Text",
@@ -606,7 +600,7 @@ def lambda_handler(event, context):
                                     'directives': [
                                         {
                                             'type': 'Alexa.Presentation.APL.RenderDocument',
-                                            'token': 'shopping-products-bright-v2',
+                                            'token': 'shopping-products-bright-v4-fixed',
                                             'document': (lambda doc: (logger.info(f"Sending APL with bg: {doc['mainTemplate']['items'][0].get('background')}"), doc)[1])(get_apl_document_products(products, product)),
                                             'datasources': {
                                                 'payload': {
@@ -676,7 +670,7 @@ def lambda_handler(event, context):
                             'directives': [
                                 {
                                     'type': 'Alexa.Presentation.APL.RenderDocument',
-                                    'token': 'shopping-cart-bright-v2',
+                                    'token': 'shopping-cart-bright-v4-fixed',
                                     'document': get_apl_document_cart(cart),
                                     'datasources': {
                                         'payload': {
@@ -736,7 +730,7 @@ def lambda_handler(event, context):
                                     'directives': [
                                         {
                                             'type': 'Alexa.Presentation.APL.RenderDocument',
-                                            'token': 'order-confirmation-bright-v2',
+                                            'token': 'order-confirmation-bright-v3',
                                             'document': get_apl_document_confirmation(order),
                                             'datasources': {
                                                 'payload': {

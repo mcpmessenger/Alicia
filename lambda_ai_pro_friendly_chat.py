@@ -9,7 +9,21 @@ import urllib.request
 import urllib.parse
 import random
 from datetime import datetime
+from decimal import Decimal
 from shopping_tools import product_search_tool
+
+# Custom JSON encoder to handle Decimal objects from DynamoDB
+class DecimalEncoder(json.JSONEncoder):
+    """
+    A custom JSON encoder that converts Decimal objects to float,
+    preventing serialization errors when sending data to Alexa.
+    """
+    def default(self, o):
+        if isinstance(o, Decimal):
+            # Convert Decimal to float for JSON serialization
+            return float(o)
+        # Let the base class default method raise the TypeError
+        return super(DecimalEncoder, self).default(o)
 
 # Configure logging
 logger = logging.getLogger()
@@ -343,7 +357,123 @@ def clear_cart(user_id):
     return cart
 
 def get_apl_document_products(products, query):
-    """Beautiful product listing APL"""
+    """ABSOLUTE MINIMAL APL - Plain text only, no emojis, white background"""
+    logger.info(f"GENERATING ABSOLUTE MINIMAL APL for {len(products)} products")
+    
+    # Build simple product list - BRIGHT COLORS + THIN FONT
+    product_list = []
+    product_list.append({
+        "type": "Text",
+        "text": f"Shopping Results: {query.title()}",
+        "fontSize": 36,
+        "fontFamily": "amazon-ember-display",
+        "fontWeight": "100",
+        "color": "#ffffff",
+        "textAlign": "center",
+        "paddingBottom": 15
+    })
+    
+    product_list.append({
+        "type": "Text",
+        "text": f"{len(products)} products found - Scroll for more",
+        "fontSize": 18,
+        "fontFamily": "amazon-ember-display",
+        "fontWeight": "300",
+        "color": "#aaaaaa",
+        "textAlign": "center",
+        "paddingBottom": 25
+    })
+    
+    # Add each product with IMAGE - ALL 10 PRODUCTS!
+    for i, product in enumerate(products[:10], 1):
+        product_list.append({
+            "type": "Container",
+            "direction": "row",
+            "width": "95%",
+            "backgroundColor": "#2a2a2a",
+            "borderRadius": 12,
+            "borderWidth": 2,
+            "borderColor": "#4a90e2",
+            "padding": 20,
+            "marginBottom": 20,
+            "items": [
+                {
+                    "type": "Image",
+                    "source": product.get('image_url', ''),
+                    "width": 120,
+                    "height": 120,
+                    "scale": "best-fill",
+                    "borderRadius": 8,
+                    "backgroundColor": "#1a1a1a"
+                },
+                {
+                    "type": "Container",
+                    "paddingLeft": 20,
+                    "grow": 1,
+                    "items": [
+                        {
+                            "type": "Text",
+                            "text": f"#{i}",
+                            "fontSize": 14,
+                            "fontFamily": "amazon-ember-display",
+                            "fontWeight": "300",
+                            "color": "#4a90e2",
+                            "paddingBottom": 5
+                        },
+                        {
+                            "type": "Text",
+                            "text": product['name'][:65],
+                            "fontSize": 18,
+                            "fontFamily": "amazon-ember-display",
+                            "fontWeight": "300",
+                            "color": "#ffffff",
+                            "maxLines": 2
+                        },
+                        {
+                            "type": "Text",
+                            "text": f"${product['price']:.2f}",
+                            "fontSize": 28,
+                            "fontFamily": "amazon-ember-display",
+                            "fontWeight": "300",
+                            "color": "#00ff00",
+                            "paddingTop": 8
+                        },
+                        {
+                            "type": "Text",
+                            "text": f"{product['rating']}/5 stars",
+                            "fontSize": 14,
+                            "fontFamily": "amazon-ember-display",
+                            "fontWeight": "300",
+                            "color": "#ffaa00",
+                            "paddingTop": 5
+                        }
+                    ]
+                }
+            ]
+        })
+    
+    return {
+        "type": "APL",
+        "version": "2023.3",
+        "mainTemplate": {
+            "parameters": [],
+            "items": [{
+                "type": "Container",
+                "width": "100vw",
+                "height": "100vh",
+                "backgroundColor": "#000000",
+                "paddingLeft": 30,
+                "paddingRight": 30,
+                "paddingTop": 30,
+                "items": product_list
+            }]
+        }
+    }
+
+def get_apl_document_products_COMPLEX_BACKUP(products, query):
+    """Return SIMPLE BRIGHT APL that WORKS - No fancy gradients"""
+    # Simple bright design - pure white background, works 100%
+    logger.info(f"GENERATING APL with background: white, {len(products)} products")
     return {
         "type": "APL",
         "version": "2023.3",
@@ -355,106 +485,63 @@ def get_apl_document_products(products, query):
                     "width": "100vw",
                     "height": "100vh",
                     "direction": "column",
-                    "background": "#ffffff",
+                    "background": "white",
                     "items": [
                         {
                             "type": "Container",
                             "width": "100%",
-                            "paddingTop": 16,
-                            "paddingBottom": 16,
-                            "paddingLeft": 20,
-                            "paddingRight": 20,
-                            "background": {
-                                "type": "LinearGradient",
-                                "colorRange": ["#667eea", "#764ba2"],
-                                "angle": 135
-                            },
+                            "height": 80,
+                            "background": "#667eea",
+                            "padding": 20,
                             "items": [
                                 {
                                     "type": "Text",
-                                    "text": "Shopping Results",
-                                    "fontSize": 14,
-                                    "fontWeight": "300",
-                                    "color": "rgba(255, 255, 255, 0.8)"
-                                },
-                                {
-                                    "type": "Text",
-                                    "text": f"{query}",
+                                    "text": f"🛍️ Shopping: {query}",
                                     "fontSize": 28,
                                     "fontWeight": "bold",
                                     "color": "#ffffff",
-                                    "marginTop": 4
-                                }
-                            ]
-                        },
-                        {
-                            "type": "Container",
-                            "width": "100%",
-                            "paddingLeft": 20,
-                            "paddingRight": 20,
-                            "paddingTop": 12,
-                            "paddingBottom": 12,
-                            "background": "#f7fafc",
-                            "items": [
-                                {
-                                    "type": "Text",
-                                    "text": f"{len(products)} products found",
-                                    "fontSize": 12,
-                                    "color": "#718096",
-                                    "fontWeight": "500"
+                                    "textAlign": "center"
                                 }
                             ]
                         },
                         {
                             "type": "Sequence",
                             "width": "100%",
-                            "height": "70vh",
+                            "height": "75vh",
+                            "paddingLeft": 40,
+                            "paddingRight": 40,
                             "scrollDirection": "vertical",
                             "data": "${payload.products}",
-                            "numbered": False,
-                            "background": "#ffffff",
+                            "numbered": True,
                             "item": {
                                 "type": "Container",
                                 "width": "100%",
-                                "paddingLeft": 20,
-                                "paddingRight": 20,
-                                "paddingTop": 16,
-                                "paddingBottom": 16,
+                                "background": "#f7fafc",
+                                "borderRadius": 15,
+                                "padding": 20,
+                                "marginBottom": 15,
                                 "items": [
                                     {
                                         "type": "Container",
-                                        "width": "100%",
-                                        "background": "#f7fafc",
-                                        "borderRadius": 12,
-                                        "borderWidth": 2,
-                                        "borderColor": "#cbd5e0",
-                                        "paddingLeft": 16,
-                                        "paddingRight": 16,
-                                        "paddingTop": 16,
-                                        "paddingBottom": 16,
+                                        "direction": "row",
                                         "items": [
                                             {
-                                                "type": "Container",
-                                                "direction": "row",
-                                                "items": [
-                                                    {
-                                                        "type": "Image",
-                                                        "source": "${data.image_url}",
-                                                        "width": 120,
-                                                        "height": 120,
-                                                        "scale": "best-fit",
-                                                        "borderRadius": 8
-                                                    },
+                                                "type": "Image",
+                                                "source": "${data.image_url}",
+                                                "width": 150,
+                                                "height": 150,
+                                                "scale": "best-fit",
+                                                "borderRadius": 15
+                                            },
                                                     {
                                                         "type": "Container",
-                                                        "direction": "column",
-                                                        "paddingLeft": 16,
+                                                        "paddingLeft": 25,
                                                         "grow": 1,
                                                         "items": [
                                                             {
                                                                 "type": "Text",
                                                                 "text": "${data.name}",
-                                                                "fontSize": 16,
+                                                                "fontSize": 20,
                                                                 "fontWeight": "bold",
                                                                 "color": "#2d3748",
                                                                 "maxLines": 2
@@ -462,57 +549,63 @@ def get_apl_document_products(products, query):
                                                             {
                                                                 "type": "Container",
                                                                 "direction": "row",
-                                                                "marginTop": 8,
-                                                                "alignItems": "center",
+                                                                "marginTop": 10,
                                                                 "items": [
                                                                     {
                                                                         "type": "Text",
                                                                         "text": "$${data.price}",
-                                                                        "fontSize": 20,
+                                                                        "fontSize": 28,
                                                                         "fontWeight": "bold",
                                                                         "color": "#48bb78"
                                                                     },
                                                                     {
-                                                                        "type": "Text",
-                                                                        "text": "⭐ ${data.rating}",
-                                                                        "fontSize": 12,
-                                                                        "color": "#f6ad55",
-                                                                        "marginLeft": 12
+                                                                        "type": "Container",
+                                                                        "paddingLeft": 20,
+                                                                        "items": [
+                                                                            {
+                                                                                "type": "Text",
+                                                                                "text": "⭐ ${data.rating}/5",
+                                                                                "fontSize": 14,
+                                                                                "color": "#f6ad55"
+                                                                            }
+                                                                        ]
                                                                     }
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "Text",
                                                                 "text": "${data.description}",
-                                                                "fontSize": 12,
+                                                                "fontSize": 14,
                                                                 "color": "#718096",
                                                                 "maxLines": 2,
-                                                                "marginTop": 8
+                                                                "marginTop": 10
+                                                            },
+                                                            {
+                                                                "type": "Container",
+                                                                "marginTop": 15,
+                                                                "padding": 15,
+                                                                "background": {
+                                                                    "type": "LinearGradient",
+                                                                    "colorRange": ["#667eea", "#764ba2"],
+                                                                    "inputRange": [0, 1],
+                                                                    "angle": 135
+                                                                },
+                                                                "borderRadius": 12,
+                                                                "items": [
+                                                                    {
+                                                                        "type": "Text",
+                                                                        "text": "🛒 Say: Add item ${index+1}",
+                                                                        "fontSize": 14,
+                                                                        "fontWeight": "bold",
+                                                                        "color": "#ffffff",
+                                                                        "textAlign": "center"
+                                                                    }
+                                                                ]
                                                             }
                                                         ]
                                                     }
                                                 ]
-                                            },
-                                            {
-                                                "type": "Container",
-                                                "width": "100%",
-                                                "marginTop": 12,
-                                                "paddingTop": 12,
-                                                "borderTopWidth": 1,
-                                                "borderTopColor": "#e2e8f0",
-                                                "items": [
-                                                    {
-                                                        "type": "Text",
-                                                        "text": "Say: Add item ${index+1}",
-                                                        "fontSize": 12,
-                                                        "color": "#667eea",
-                                                        "fontWeight": "bold",
-                                                        "textAlign": "center"
-                                                    }
-                                                ]
                                             }
-                                        ]
-                                    }
                                 ]
                             }
                         }
@@ -585,12 +678,22 @@ def lambda_handler(event, context):
                             products = tool_data.get('products', [])
                             
                             if products:
-                                session_attributes['current_products'] = json.dumps(products)
+                                logger.info(f"LLMQueryIntent: Found {len(products)} products for shopping query")
+                                
+                                # Clean products data - ensure JSON serializable
+                                products_clean = json.loads(json.dumps(products, cls=DecimalEncoder))
+                                logger.info(f"Products cleaned and serialized successfully")
+                                
+                                session_attributes['current_products'] = json.dumps(products_clean)
                                 
                                 response_text = f"Sure! I found {len(products)} great options for {product}. "
                                 for i, p in enumerate(products[:3], 1):
                                     response_text += f"Option {i}: {p['name']} at ${p['price']:.2f}. "
                                 response_text += "Say 'add item 1' if you'd like to add any!"
+                                
+                                logger.info(f"Building APL for LLMQueryIntent shopping path...")
+                                apl_doc = get_apl_document_products(products_clean, product)
+                                logger.info(f"APL document created for LLMQueryIntent")
                                 
                                 return {
                                     'version': '1.0',
@@ -604,10 +707,10 @@ def lambda_handler(event, context):
                                             {
                                                 'type': 'Alexa.Presentation.APL.RenderDocument',
                                                 'token': 'shopping-products-bright',
-                                                'document': get_apl_document_products(products, product),
+                                                'document': apl_doc,
                                                 'datasources': {
                                                     'payload': {
-                                                        'products': products,
+                                                        'products': products_clean,
                                                         'query': product
                                                     }
                                                 }
@@ -682,6 +785,8 @@ def lambda_handler(event, context):
             
             # ========== SHOPPING INTENT (Direct Product Search) ==========
             elif intent_name == 'ShoppingIntent':
+                logger.info(">>> EXECUTING SHOPPING INTENT HANDLER - CODE PATH CONFIRMED <<<")
+                
                 slots = event['request']['intent'].get('slots', {})
                 product = slots.get('Product', {}).get('value', '')
                 price = slots.get('Price', {}).get('value', '')
@@ -690,20 +795,33 @@ def lambda_handler(event, context):
                 logger.info(f"Shopping: Product={product}, Price={price}, Category={category}")
                 
                 try:
+                    logger.info(f"Starting product search for: {product}")
                     max_price = float(price) if price else None
                     tool_output = product_search_tool(product, max_price, category)
+                    logger.info(f"Product search completed, parsing results...")
                     tool_data = json.loads(tool_output)
+                    logger.info(f"Tool response status: {tool_data.get('status')}")
                     
                     if tool_data.get('status') == 'success':
                         products = tool_data.get('products', [])
                         
                         if products:
-                            session_attributes['current_products'] = json.dumps(products)
+                            logger.info(f"Found {len(products)} products, generating APL...")
+                            
+                            # Clean products data - ensure JSON serializable
+                            products_clean = json.loads(json.dumps(products, cls=DecimalEncoder))
+                            logger.info(f"Products cleaned and serialized successfully")
+                            
+                            session_attributes['current_products'] = json.dumps(products_clean)
                             
                             response_text = f"Perfect! I found {len(products)} great options for {product}. "
                             for i, p in enumerate(products[:3], 1):
                                 response_text += f"Option {i}: {p['name']} at ${p['price']:.2f}. "
                             response_text += "Say 'add item 1' to add to your cart!"
+                            
+                            logger.info(f"Building APL document for {len(products_clean)} products...")
+                            apl_doc = get_apl_document_products(products_clean, product)
+                            logger.info(f"APL document created, sending response...")
                             
                             return {
                                 'version': '1.0',
@@ -717,10 +835,10 @@ def lambda_handler(event, context):
                                         {
                                             'type': 'Alexa.Presentation.APL.RenderDocument',
                                             'token': 'shopping-products-bright',
-                                            'document': get_apl_document_products(products, product),
+                                            'document': apl_doc,
                                             'datasources': {
                                                 'payload': {
-                                                    'products': products,
+                                                    'products': products_clean,
                                                     'query': product
                                                 }
                                             }

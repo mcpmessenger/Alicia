@@ -42,74 +42,72 @@ def get_simple_bright_apl(products, query):
                             "paddingTop": 20,
                             "data": "${payload.products}",
                             "numbered": True,
-                            "items": [
-                                {
-                                    "type": "Container",
-                                    "width": "100%",
-                                    "background": "#f7fafc",
-                                    "borderRadius": 15,
-                                    "padding": 20,
-                                    "marginBottom": 15,
-                                    "direction": "row",
-                                    "items": [
-                                        {
-                                            "type": "Image",
-                                            "source": "${data.image_url}",
-                                            "width": 120,
-                                            "height": 120,
-                                            "scale": "best-fit",
-                                            "borderRadius": 10
-                                        },
-                                        {
-                                            "type": "Container",
-                                            "paddingLeft": 20,
-                                            "grow": 1,
-                                            "items": [
-                                                {
-                                                    "type": "Text",
-                                                    "text": "${data.name}",
-                                                    "fontSize": 18,
-                                                    "fontWeight": "bold",
-                                                    "color": "#2d3748",
-                                                    "maxLines": 2
-                                                },
-                                                {
-                                                    "type": "Text",
-                                                    "text": "$${data.price}",
-                                                    "fontSize": 24,
-                                                    "fontWeight": "bold",
-                                                    "color": "#48bb78",
-                                                    "marginTop": 5
-                                                },
-                                                {
-                                                    "type": "Text",
-                                                    "text": "⭐ ${data.rating}/5 (${data.reviews} reviews)",
-                                                    "fontSize": 13,
-                                                    "color": "#718096",
-                                                    "marginTop": 5
-                                                },
-                                                {
-                                                    "type": "Container",
-                                                    "marginTop": 10,
-                                                    "padding": 12,
-                                                    "background": "#667eea",
-                                                    "borderRadius": 10,
-                                                    "items": [
-                                                        {
-                                                            "type": "Text",
-                                                            "text": "🛒 Say: Add item ${index+1}",
-                                                            "fontSize": 14,
-                                                            "fontWeight": "bold",
-                                                            "color": "#ffffff",
-                                                            "textAlign": "center"
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
+                            "item": {
+                                "type": "Container",
+                                "width": "100%",
+                                "background": "#f7fafc",
+                                "borderRadius": 15,
+                                "padding": 20,
+                                "marginBottom": 15,
+                                "direction": "row",
+                                "items": [
+                                    {
+                                        "type": "Image",
+                                        "source": "${data.image_url}",
+                                        "width": 120,
+                                        "height": 120,
+                                        "scale": "best-fit",
+                                        "borderRadius": 10
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": 20,
+                                        "grow": 1,
+                                        "items": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${data.name}",
+                                                "fontSize": 18,
+                                                "fontWeight": "bold",
+                                                "color": "#2d3748",
+                                                "maxLines": 2
+                                            },
+                                            {
+                                                "type": "Text",
+                                                "text": "$${data.price}",
+                                                "fontSize": 24,
+                                                "fontWeight": "bold",
+                                                "color": "#48bb78",
+                                                "marginTop": 5
+                                            },
+                                            {
+                                                "type": "Text",
+                                                "text": "⭐ ${data.rating}/5 (${data.reviews} reviews)",
+                                                "fontSize": 13,
+                                                "color": "#718096",
+                                                "marginTop": 5
+                                            },
+                                            {
+                                                "type": "Container",
+                                                "marginTop": 10,
+                                                "padding": 12,
+                                                "background": "#667eea",
+                                                "borderRadius": 10,
+                                                "items": [
+                                                    {
+                                                        "type": "Text",
+                                                        "text": "🛒 Say: Add item ${index+1}",
+                                                        "fontSize": 14,
+                                                        "fontWeight": "bold",
+                                                        "color": "#ffffff",
+                                                        "textAlign": "center"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         },
                         {
                             "type": "Container",
@@ -161,48 +159,46 @@ def get_simple_bright_cart(cart_items, total):
                             "type": "Sequence",
                             "height": "60vh",
                             "data": "${payload.cartItems}",
-                            "items": [
-                                {
-                                    "type": "Container",
-                                    "background": "#f7fafc",
-                                    "borderRadius": 15,
-                                    "padding": 15,
-                                    "marginBottom": 10,
-                                    "direction": "row",
-                                    "items": [
-                                        {
-                                            "type": "Image",
-                                            "source": "${data.image_url}",
-                                            "width": 80,
-                                            "height": 80,
-                                            "scale": "best-fit",
-                                            "borderRadius": 10
-                                        },
-                                        {
-                                            "type": "Container",
-                                            "paddingLeft": 15,
-                                            "grow": 1,
-                                            "items": [
-                                                {
-                                                    "type": "Text",
-                                                    "text": "${data.name}",
-                                                    "fontSize": 16,
-                                                    "fontWeight": "bold",
-                                                    "color": "#2d3748"
-                                                },
-                                                {
-                                                    "type": "Text",
-                                                    "text": "$${data.price}",
-                                                    "fontSize": 20,
-                                                    "fontWeight": "bold",
-                                                    "color": "#48bb78",
-                                                    "marginTop": 5
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
+                            "item": {
+                                "type": "Container",
+                                "background": "#f7fafc",
+                                "borderRadius": 15,
+                                "padding": 15,
+                                "marginBottom": 10,
+                                "direction": "row",
+                                "items": [
+                                    {
+                                        "type": "Image",
+                                        "source": "${data.image_url}",
+                                        "width": 80,
+                                        "height": 80,
+                                        "scale": "best-fit",
+                                        "borderRadius": 10
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "paddingLeft": 15,
+                                        "grow": 1,
+                                        "items": [
+                                            {
+                                                "type": "Text",
+                                                "text": "${data.name}",
+                                                "fontSize": 16,
+                                                "fontWeight": "bold",
+                                                "color": "#2d3748"
+                                            },
+                                            {
+                                                "type": "Text",
+                                                "text": "$${data.price}",
+                                                "fontSize": 20,
+                                                "fontWeight": "bold",
+                                                "color": "#48bb78",
+                                                "marginTop": 5
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         },
                         {
                             "type": "Container",
@@ -323,5 +319,6 @@ def get_simple_bright_confirmation(order_id, total, tracking):
             ]
         }
     }
+
 
 

@@ -208,6 +208,9 @@ def clear_cart(user_id):
 def get_apl_document_products(products, query):
     """Beautiful product listing APL (same as before)"""
     logger.info(f"Generating APL for query: {query}")
+    logger.info(f"Products count: {len(products)}")
+    if products:
+        logger.info(f"First product: {products[0].get('name', 'N/A')}")
     return {
         "type": "APL",
         "version": "2023.3",
@@ -272,114 +275,113 @@ def get_apl_document_products(products, query):
                         {
                             "type": "Sequence",
                             "width": "100%",
-                            "height": "1fr",
+                            "height": "70vh",
                             "scrollDirection": "vertical",
                             "data": "${payload.products}",
                             "numbered": False,
-                            "items": [
-                                {
-                                    "type": "Container",
-                                    "width": "100%",
-                                    "paddingLeft": 16,
-                                    "paddingRight": 16,
-                                    "paddingTop": 12,
-                                    "paddingBottom": 12,
-                                    "items": [
-                                        {
-                                            "type": "Container",
-                                            "width": "100%",
-                                            "background": "#ffffff",
-                                            "borderRadius": 12,
-                                            "paddingLeft": 16,
-                                            "paddingRight": 16,
-                                            "paddingTop": 16,
-                                            "paddingBottom": 16,
-                                            "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.08)",
-                                            "items": [
-                                                {
-                                                    "type": "Container",
-                                                    "direction": "row",
-                                                    "items": [
-                                                        {
-                                                            "type": "Image",
-                                                            "source": "${data.image_url}",
-                                                            "width": 120,
-                                                            "height": 120,
-                                                            "scale": "best-fit",
-                                                            "borderRadius": 8,
-                                                            "boxShadow": "0 2px 6px rgba(0, 0, 0, 0.1)"
-                                                        },
-                                                        {
-                                                            "type": "Container",
-                                                            "direction": "column",
-                                                            "paddingLeft": 16,
-                                                            "grow": 1,
-                                                            "items": [
-                                                                {
-                                                                    "type": "Text",
-                                                                    "text": "${data.name}",
-                                                                    "fontSize": 16,
-                                                                    "fontWeight": "bold",
-                                                                    "color": "#2d3748",
-                                                                    "maxLines": 2
-                                                                },
-                                                                {
-                                                                    "type": "Container",
-                                                                    "direction": "row",
-                                                                    "marginTop": 8,
-                                                                    "alignItems": "center",
-                                                                    "items": [
-                                                                        {
-                                                                            "type": "Text",
-                                                                            "text": "$${data.price}",
-                                                                            "fontSize": 20,
-                                                                            "fontWeight": "bold",
-                                                                            "color": "#48bb78"
-                                                                        },
-                                                                        {
-                                                                            "type": "Text",
-                                                                            "text": "⭐ ${data.rating}",
-                                                                            "fontSize": 12,
-                                                                            "color": "#f6ad55",
-                                                                            "marginLeft": 12
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                {
-                                                                    "type": "Text",
-                                                                    "text": "${data.description}",
-                                                                    "fontSize": 12,
-                                                                    "color": "#718096",
-                                                                    "maxLines": 2,
-                                                                    "marginTop": 8
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "type": "Container",
-                                                    "width": "100%",
-                                                    "marginTop": 12,
-                                                    "paddingTop": 12,
-                                                    "borderTopWidth": 1,
-                                                    "borderTopColor": "#e2e8f0",
-                                                    "items": [
-                                                        {
-                                                            "type": "Text",
-                                                            "text": "Say: Add item ${index+1}",
-                                                            "fontSize": 12,
-                                                            "color": "#667eea",
-                                                            "fontWeight": "bold",
-                                                            "textAlign": "center"
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
+                            "background": "#ffffff",
+                            "item": {
+                                "type": "Container",
+                                "width": "100%",
+                                "paddingLeft": 20,
+                                "paddingRight": 20,
+                                "paddingTop": 16,
+                                "paddingBottom": 16,
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "width": "100%",
+                                        "background": "#f7fafc",
+                                        "borderRadius": 12,
+                                        "borderWidth": 2,
+                                        "borderColor": "#cbd5e0",
+                                        "paddingLeft": 16,
+                                        "paddingRight": 16,
+                                        "paddingTop": 16,
+                                        "paddingBottom": 16,
+                                        "items": [
+                                            {
+                                                "type": "Container",
+                                                "direction": "row",
+                                                "items": [
+                                                    {
+                                                        "type": "Image",
+                                                        "source": "${data.image_url}",
+                                                        "width": 120,
+                                                        "height": 120,
+                                                        "scale": "best-fit",
+                                                        "borderRadius": 8
+                                                    },
+                                                    {
+                                                        "type": "Container",
+                                                        "direction": "column",
+                                                        "paddingLeft": 16,
+                                                        "grow": 1,
+                                                        "items": [
+                                                            {
+                                                                "type": "Text",
+                                                                "text": "${data.name}",
+                                                                "fontSize": 16,
+                                                                "fontWeight": "bold",
+                                                                "color": "#2d3748",
+                                                                "maxLines": 2
+                                                            },
+                                                            {
+                                                                "type": "Container",
+                                                                "direction": "row",
+                                                                "marginTop": 8,
+                                                                "alignItems": "center",
+                                                                "items": [
+                                                                    {
+                                                                        "type": "Text",
+                                                                        "text": "$${data.price}",
+                                                                        "fontSize": 20,
+                                                                        "fontWeight": "bold",
+                                                                        "color": "#48bb78"
+                                                                    },
+                                                                    {
+                                                                        "type": "Text",
+                                                                        "text": "⭐ ${data.rating}",
+                                                                        "fontSize": 12,
+                                                                        "color": "#f6ad55",
+                                                                        "marginLeft": 12
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "Text",
+                                                                "text": "${data.description}",
+                                                                "fontSize": 12,
+                                                                "color": "#718096",
+                                                                "maxLines": 2,
+                                                                "marginTop": 8
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "Container",
+                                                "width": "100%",
+                                                "marginTop": 12,
+                                                "paddingTop": 12,
+                                                "borderTopWidth": 1,
+                                                "borderTopColor": "#e2e8f0",
+                                                "items": [
+                                                    {
+                                                        "type": "Text",
+                                                        "text": "Say: Add item ${index+1}",
+                                                        "fontSize": 12,
+                                                        "color": "#667eea",
+                                                        "fontWeight": "bold",
+                                                        "textAlign": "center"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -459,6 +461,8 @@ def lambda_handler(event, context):
                                     response_text += f"Item {i}: {p['name']} at ${p['price']:.2f}. "
                                 response_text += "Say 'add item 1' to add any item to your cart!"
                                 
+                                logger.info(f"Sending APL with {len(products)} products to datasources")
+                                
                                 return {
                                     'version': '1.0',
                                     'sessionAttributes': session_attributes,
@@ -470,7 +474,7 @@ def lambda_handler(event, context):
                                         'directives': [
                                             {
                                                 'type': 'Alexa.Presentation.APL.RenderDocument',
-                                                'token': 'shopping-products-bright-v3',
+                                                'token': 'shopping-products-bright-v4-fixed',
                                                 'document': get_apl_document_products(products, product),
                                                 'datasources': {
                                                     'payload': {
@@ -537,7 +541,7 @@ def lambda_handler(event, context):
                                     'directives': [
                                         {
                                             'type': 'Alexa.Presentation.APL.RenderDocument',
-                                            'token': 'shopping-products-bright-v3',
+                                            'token': 'shopping-products-bright-v4-fixed',
                                             'document': get_apl_document_products(products, product),
                                             'datasources': {
                                                 'payload': {

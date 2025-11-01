@@ -2,6 +2,19 @@
 
 A secure Alexa Skill that allows users to interact with multiple Large Language Model providers (OpenAI, Google Gemini, Anthropic Claude) using their own API keys.
 
+## 🚨 CURRENT STATUS: APL Dark Display Bug
+
+**Issue**: APL (Alexa Presentation Language) displays are showing completely black backgrounds instead of bright white backgrounds.
+
+**Status**: 🔍 **INVESTIGATION IN PROGRESS** - Need community help with APL caching issues
+
+**Key Files**:
+- `APL_DARK_DISPLAY_DIAGNOSIS.md` - Complete diagnosis and research guide
+- `alexa-apl-document.json` - Main APL template (modified for bright mode)
+- `lambda_ai_pro_secure.py` - Lambda function with APL fixes
+
+**Research Needed**: APL caching mechanisms, background property syntax, device-specific APL behavior
+
 ## 🚀 Features
 
 - **Multi-Provider Support**: OpenAI GPT, Google Gemini, Anthropic Claude
@@ -9,6 +22,7 @@ A secure Alexa Skill that allows users to interact with multiple Large Language 
 - **Voice Commands**: Natural language interaction with AI models
 - **Session Management**: Maintains conversation context
 - **Web Portal**: Secure API key configuration interface
+- **Shopping Assistant**: Product search and cart management (with APL display issues)
 
 ## 📋 Prerequisites
 

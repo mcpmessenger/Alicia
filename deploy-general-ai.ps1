@@ -42,3 +42,6 @@ Write-Host "   4. Try: 'Find me wireless headphones'" -ForegroundColor White
 Write-Host "`n💡 Get your OpenAI API key:" -ForegroundColor Yellow
 Write-Host "   https://platform.openai.com/api-keys" -ForegroundColor White
 
+
+
+
